@@ -33,16 +33,16 @@
     "components",
     "ui"
   ],
-  "author": "Your Name",
+  "author": "Mark Webb-Johnson <mark@openvehicles.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/react-native-vehicle-gauges.git"
+    "url": "https://github.com/openvehicles/react-native-vehicle-gauges.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/react-native-vehicle-gauges/issues"
+    "url": "https://github.com/openvehicles/react-native-vehicle-gauges/issues"
   },
-  "homepage": "https://github.com/yourusername/react-native-vehicle-gauges#readme",
+  "homepage": "https://github.com/openvehicles/react-native-vehicle-gauges#readme",
   "peerDependencies": {
     "react": ">=16.8.0",
     "react-native": ">=0.60.0",
