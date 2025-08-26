@@ -17,6 +17,7 @@
     "dev": "tsc --watch",
     "lint": "eslint src/**/*.{ts,tsx}",
     "lint:fix": "eslint src/**/*.{ts,tsx} --fix",
+    "prepublishOnly": "npm run build",
     "web": "vite",
     "web:build": "vite build"
   },

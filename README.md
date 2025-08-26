@@ -361,6 +361,49 @@ npm run test
 
 We welcome contributions! Please read our contributing guidelines and submit pull requests to help improve this library.
 
+## Development
+
+### Building the Library
+
+```bash
+# Build TypeScript to dist/
+npm run build
+
+# Watch mode for development
+npm run dev
+```
+
+### Running Examples
+
+```bash
+# Start web demo
+npm run web
+
+# Build web demo for production
+npm run web:build
+```
+
+### Publishing
+
+The library follows npm best practices:
+
+1. **Build files are included in Git** for reliability
+2. **Automatic build before publish** via `prepublishOnly` script
+3. **Full TypeScript support** with declaration files
+
+To publish a new version:
+
+```bash
+# Update version in package.json
+npm version patch  # or minor, major
+
+# Build and publish (build runs automatically)
+npm publish
+
+# Push version tag to Git
+git push --tags
+```
+
 ## License
 
 MIT License - see the [LICENSE](LICENSE) file for details.
