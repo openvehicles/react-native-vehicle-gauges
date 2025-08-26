@@ -125,3 +125,16 @@ export interface GaugeOilPressureProps {
   showDigitalPressure?: boolean;
   padding?: number; // Padding as percentage of radius (default 15%)
 }
+
+export type GaugeGearOrientation = 'portrait' | 'landscape';
+
+export interface GaugeGearProps {
+  currentGear: string; // Current selected gear (e.g., 'P', 'R', 'N', 'D')
+  gears?: string[]; // Available gears (default ['P', 'R', 'N', 'D'])
+  orientation?: GaugeGearOrientation; // Layout orientation (default 'portrait')
+  size?: GaugeSize;
+  theme?: GaugeThemeMode;
+  colors?: GaugeColors;
+  fonts?: GaugeFonts;
+  padding?: number; // Padding as percentage of width/height (default 10%)
+}

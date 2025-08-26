@@ -161,7 +161,7 @@ interface GaugeFonts {
 ```typescript
 import React from 'react';
 import { View } from 'react-native';
-import { GaugeSpeedometer, GaugeTachometer, GaugeBattery, GaugeFuel, GaugeTemperature, GaugeOilPressure } from 'react-native-vehicle-gauges';
+import { GaugeSpeedometer, GaugeTachometer, GaugeBattery, GaugeFuel, GaugeTemperature, GaugeOilPressure, GaugeGear } from 'react-native-vehicle-gauges';
 
 export default function App() {
   const [speed, setSpeed] = React.useState(65);
@@ -170,6 +170,7 @@ export default function App() {
   const [fuelLevel, setFuelLevel] = React.useState(75);
   const [temperature, setTemperature] = React.useState(85);
   const [oilPressure, setOilPressure] = React.useState(35);
+  const [currentGear, setCurrentGear] = React.useState('D');
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
@@ -260,6 +261,15 @@ export default function App() {
         colors={{
           needle: '#4CAF50',
           redline: '#FF5722',
+          digitalSpeed: '#4CAF50'
+        }}
+      />
+      
+      <GaugeGear
+        currentGear={currentGear}
+        gears={['P', 'R', 'N', 'D']}
+        size={{ width: 120, height: 300 }}
+        colors={{
           digitalSpeed: '#4CAF50'
         }}
       />
@@ -363,6 +373,7 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 - [x] ~~Fuel gauge~~ ✅ **Completed**
 - [x] ~~Temperature gauge~~ ✅ **Completed**
 - [x] ~~Oil pressure gauge~~ ✅ **Completed**
+- [x] ~~Gear selector~~ ✅ **Completed**
 
 ## Support
 

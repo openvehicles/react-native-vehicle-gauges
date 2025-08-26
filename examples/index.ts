@@ -6,3 +6,4 @@ export { BatteryExample } from './BatteryExample';
 export { FuelExample } from './FuelExample';
 export { TemperatureExample } from './TemperatureExample';
 export { OilPressureExample } from './OilPressureExample';
+export { GearExample } from './GearExample';

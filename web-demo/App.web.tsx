@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native-web';
 
 // Import our gauge components directly - React Native Web handles the conversion
-import { GaugeSpeedometer, GaugeTachometer, GaugeBattery, GaugeFuel, GaugeTemperature, GaugeOilPressure } from '../src';
+import { GaugeSpeedometer, GaugeTachometer, GaugeBattery, GaugeFuel, GaugeTemperature, GaugeOilPressure, GaugeGear } from '../src';
 import { GaugeThemeMode } from '../src/types';
 
 const WebDemo: React.FC = () => {
@@ -24,6 +24,9 @@ const WebDemo: React.FC = () => {
   const [pressure1, setPressure1] = useState(35);
   const [pressure2, setPressure2] = useState(45);
   const [pressure3, setPressure3] = useState(2.5);
+  const [gear1, setGear1] = useState('P');
+  const [gear2, setGear2] = useState('1');
+  const [gear3, setGear3] = useState('D');
   const [isAnimating, setIsAnimating] = useState(true);
   const [theme, setTheme] = useState<GaugeThemeMode>('dark');
 
@@ -121,6 +124,29 @@ const WebDemo: React.FC = () => {
         const change = (Math.random() - 0.5) * 0.8;
         return Math.max(1.0, Math.min(5.5, prev + change));
       });
+
+      // Cycle through gears
+      const standardGears = ['P', 'R', 'N', 'D'];
+      const manualGears = ['P', 'R', 'N', '1', '2', 'D'];
+      const cvtGears = ['P', 'R', 'N', 'D', 'S', 'L'];
+
+      setGear1(prev => {
+        const currentIndex = standardGears.indexOf(prev);
+        const nextIndex = (currentIndex + 1) % standardGears.length;
+        return standardGears[nextIndex];
+      });
+      
+      setGear2(prev => {
+        const currentIndex = manualGears.indexOf(prev);
+        const nextIndex = (currentIndex + 1) % manualGears.length;
+        return manualGears[nextIndex];
+      });
+      
+      setGear3(prev => {
+        const currentIndex = cvtGears.indexOf(prev);
+        const nextIndex = (currentIndex + 1) % cvtGears.length;
+        return cvtGears[nextIndex];
+      });
     }, 2000);
 
     return () => clearInterval(interval);
@@ -145,6 +171,9 @@ const WebDemo: React.FC = () => {
     setPressure1(35);
     setPressure2(45);
     setPressure3(2.5);
+    setGear1('P');
+    setGear2('1');
+    setGear3('D');
   };
 
   const maxSpeeds = () => {
@@ -166,6 +195,9 @@ const WebDemo: React.FC = () => {
     setPressure1(8);
     setPressure2(85);
     setPressure3(0.5);
+    setGear1('R');
+    setGear2('2');
+    setGear3('L');
   };
 
   return (
@@ -719,6 +751,104 @@ const WebDemo: React.FC = () => {
           </View>
           <Text style={styles.speedDisplay}>Current: {pressure3.toFixed(1)} bar</Text>
         </View>
+
+        {/* Gear Selectors Row */}
+        <View style={styles.gearRow}>
+          {/* Automatic Transmission */}
+          <View style={styles.gearSection}>
+            <Text style={styles.gaugeTitle}>Automatic Transmission</Text>
+            <Text style={styles.gaugeDescription}>Standard PRND layout</Text>
+            <View style={styles.gaugeWrapper}>
+              <GaugeGear
+                currentGear={gear1}
+                gears={['P', 'R', 'N', 'D']}
+                size={{ width: 120, height: 300 }}
+                theme={theme}
+                colors={{
+                  digitalSpeed: '#4CAF50',
+                }}
+              />
+            </View>
+            <Text style={styles.speedDisplay}>Current: {gear1}</Text>
+          </View>
+
+          {/* Manual Transmission */}
+          <View style={styles.gearSection}>
+            <Text style={styles.gaugeTitle}>Manual Transmission</Text>
+            <Text style={styles.gaugeDescription}>Simplified PRN12D layout</Text>
+            <View style={styles.gaugeWrapper}>
+              <GaugeGear
+                currentGear={gear2}
+                gears={['P', 'R', 'N', '1', '2', 'D']}
+                size={{ width: 120, height: 300 }}
+                theme={theme}
+                colors={{
+                  digitalSpeed: '#FF9800',
+                }}
+              />
+            </View>
+            <Text style={styles.speedDisplay}>Current: {gear2}</Text>
+          </View>
+
+          {/* CVT Transmission */}
+          <View style={styles.gearSection}>
+            <Text style={styles.gaugeTitle}>CVT Transmission</Text>
+            <Text style={styles.gaugeDescription}>Continuously Variable Transmission</Text>
+            <View style={styles.gaugeWrapper}>
+              <GaugeGear
+                currentGear={gear3}
+                gears={['P', 'R', 'N', 'D', 'S', 'L']}
+                size={{ width: 120, height: 300 }}
+                theme={theme}
+                colors={{
+                  digitalSpeed: '#2196F3',
+                }}
+              />
+            </View>
+            <Text style={styles.speedDisplay}>Current: {gear3}</Text>
+          </View>
+        </View>
+
+        {/* Landscape Gear Selectors */}
+        <View style={styles.landscapeGearRow}>
+          <Text style={styles.sectionTitle}>Landscape Gear Selectors</Text>
+          
+          <View style={styles.landscapeGearSection}>
+            <Text style={styles.gaugeTitle}>Automatic - Landscape</Text>
+            <Text style={styles.gaugeDescription}>Horizontal PRND layout</Text>
+            <View style={styles.gaugeWrapper}>
+              <GaugeGear
+                currentGear={gear1}
+                gears={['P', 'R', 'N', 'D']}
+                orientation="landscape"
+                size={{ width: 300, height: 120 }}
+                theme={theme}
+                colors={{
+                  digitalSpeed: '#4CAF50',
+                }}
+              />
+            </View>
+            <Text style={styles.speedDisplay}>Current: {gear1}</Text>
+          </View>
+
+          <View style={styles.landscapeGearSection}>
+            <Text style={styles.gaugeTitle}>Manual - Landscape</Text>
+            <Text style={styles.gaugeDescription}>Horizontal PRN12D layout</Text>
+            <View style={styles.gaugeWrapper}>
+              <GaugeGear
+                currentGear={gear2}
+                gears={['P', 'R', 'N', '1', '2', 'D']}
+                orientation="landscape"
+                size={{ width: 300, height: 120 }}
+                theme={theme}
+                colors={{
+                  digitalSpeed: '#FF9800',
+                }}
+              />
+            </View>
+            <Text style={styles.speedDisplay}>Current: {gear2}</Text>
+          </View>
+        </View>
       </View>
 
       <View style={styles.footer}>
@@ -726,7 +856,7 @@ const WebDemo: React.FC = () => {
           🚀 Built with React Native • Running on React Native Web
         </Text>
         <Text style={styles.footerSubtext}>
-          This demo shows real-time animated speedometers, tachometers, battery gauges, fuel gauges, temperature gauges, and oil pressure gauges with different themes and configurations
+          This demo shows real-time animated speedometers, tachometers, battery gauges, fuel gauges, temperature gauges, oil pressure gauges, and gear selectors with different themes and configurations
         </Text>
       </View>
     </ScrollView>
@@ -808,6 +938,45 @@ const styles = StyleSheet.create({
   gaugeWrapper: {
     marginBottom: 20,
     alignItems: 'center',
+  },
+  gearRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'flex-start',
+    marginBottom: 40,
+    flexWrap: 'wrap',
+    gap: 20,
+  },
+  gearSection: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 20,
+    backdropFilter: 'blur(10px)',
+    minWidth: 160,
+  },
+  landscapeGearRow: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: 40,
+    gap: 30,
+  },
+  landscapeGearSection: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 20,
+    padding: 20,
+    backdropFilter: 'blur(10px)',
+    width: '100%',
+    maxWidth: 400,
+  },
+  sectionTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 20,
+    textAlign: 'center',
   },
   speedDisplay: {
     fontSize: 20,
