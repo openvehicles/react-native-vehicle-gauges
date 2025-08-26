@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
   },
   digitalVoltageContainer: {
     position: 'absolute',
-    bottom: 10,
+    bottom: 35,
     alignItems: 'center',
   },
   digitalVoltage: {
@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
   },
   batteryContainer: {
     position: 'absolute',
-    bottom: 50, // Position above digital display
+    bottom: 75, // Position above digital display
     alignItems: 'center',
   },
   batteryText: {
