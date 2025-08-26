@@ -1,0 +1,3 @@
+export { GaugeSpeedometer } from './GaugeSpeedometer';
+export { GaugeTachometer } from './GaugeTachometer';
+export { GaugeBattery } from './GaugeBattery';
