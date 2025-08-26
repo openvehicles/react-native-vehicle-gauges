@@ -1,6 +1,6 @@
 {
   "name": "react-native-vehicle-gauges",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A comprehensive suite of React Native components for displaying vehicle gauge clusters as seen in cars and motorcycles",
   "main": "dist/index.js",
   "types": "index.d.ts",
