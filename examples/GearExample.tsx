@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { GaugeGear } from 'react-native-vehicle-gauges';
+import { GaugeGear } from '../src/components';
 
 /**
  * Gear Selector Example

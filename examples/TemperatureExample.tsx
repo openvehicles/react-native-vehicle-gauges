@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { GaugeTemperature } from 'react-native-vehicle-gauges';
+import { GaugeTemperature } from '../src/components';
 
 /**
  * Temperature Example

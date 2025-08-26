@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { GaugeTachometer } from 'react-native-vehicle-gauges';
+import { GaugeTachometer } from '../src/components';
 
 /**
  * Tachometer Example

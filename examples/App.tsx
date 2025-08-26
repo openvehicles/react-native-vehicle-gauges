@@ -13,7 +13,7 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
-import { GaugeSpeedometer } from 'react-native-vehicle-gauges';
+import { GaugeSpeedometer } from '../src/components';
 
 function App(): React.JSX.Element {
   const [speed, setSpeed] = useState(0);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Animated } from 'react-native';
-import { GaugeSpeedometer } from 'react-native-vehicle-gauges';
+import { GaugeSpeedometer } from '../src/components';
 
 /**
  * Animated Speedometer Example

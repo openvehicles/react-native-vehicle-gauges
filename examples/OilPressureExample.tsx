@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { GaugeOilPressure } from 'react-native-vehicle-gauges';
+import { GaugeOilPressure } from '../src/components';
 
 /**
  * Oil Pressure Example

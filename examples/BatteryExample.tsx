@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { GaugeBattery } from 'react-native-vehicle-gauges';
+import { GaugeBattery } from '../src/components';
 
 /**
  * Battery Voltage Example
