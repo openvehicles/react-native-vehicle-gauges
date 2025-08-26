@@ -76,3 +76,18 @@ export interface GaugeBatteryProps {
   showDigitalVoltage?: boolean;
   padding?: number; // Padding as percentage of radius (default 15%)
 }
+
+export type FuelUnits = 'percentage' | 'litres' | 'gallons';
+
+export interface GaugeFuelProps {
+  fuelLevel: number; // Fuel level as percentage (0-100)
+  tankCapacity?: number; // Tank capacity in litres or gallons (for display)
+  lowFuelThreshold?: number; // Warning zone threshold (default 25%)
+  units?: FuelUnits; // Display units (default 'percentage')
+  size?: GaugeSize;
+  theme?: GaugeThemeMode;
+  colors?: GaugeColors;
+  fonts?: GaugeFonts;
+  showDigitalLevel?: boolean;
+  padding?: number; // Padding as percentage of radius (default 15%)
+}

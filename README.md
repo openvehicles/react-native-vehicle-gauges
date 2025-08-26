@@ -161,12 +161,13 @@ interface GaugeFonts {
 ```typescript
 import React from 'react';
 import { View } from 'react-native';
-import { GaugeSpeedometer, GaugeTachometer, GaugeBattery } from 'react-native-vehicle-gauges';
+import { GaugeSpeedometer, GaugeTachometer, GaugeBattery, GaugeFuel } from 'react-native-vehicle-gauges';
 
 export default function App() {
   const [speed, setSpeed] = React.useState(65);
   const [rpm, setRpm] = React.useState(3500);
   const [voltage, setVoltage] = React.useState(12.6);
+  const [fuelLevel, setFuelLevel] = React.useState(75);
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
@@ -212,6 +213,20 @@ export default function App() {
           needle: '#4CAF50',
           redline: '#FF5722',
           digitalSpeed: '#4CAF50'
+        }}
+      />
+      
+      <GaugeFuel
+        fuelLevel={fuelLevel}
+        tankCapacity={60} // 60 litres
+        lowFuelThreshold={20}
+        units="litres"
+        size={{ width: 300, height: 150 }}
+        showDigitalLevel={true}
+        colors={{
+          needle: '#2196F3',
+          redline: '#FF5722',
+          digitalSpeed: '#2196F3'
         }}
       />
     </View>
@@ -311,12 +326,9 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 - [x] ~~Tachometer gauge~~ ✅ **Completed**
 - [x] ~~Battery voltage gauge~~ ✅ **Completed**
 - [x] ~~Theme system~~ ✅ **Completed**
-- [ ] Fuel gauge
+- [x] ~~Fuel gauge~~ ✅ **Completed**
 - [ ] Temperature gauge
 - [ ] Oil pressure gauge
-- [ ] Multi-gauge clusters
-- [ ] Custom gauge builder
-- [ ] Animation presets
 
 ## Support
 

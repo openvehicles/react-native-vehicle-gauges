@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native-web';
 
 // Import our gauge components directly - React Native Web handles the conversion
-import { GaugeSpeedometer, GaugeTachometer, GaugeBattery } from '../src';
+import { GaugeSpeedometer, GaugeTachometer, GaugeBattery, GaugeFuel } from '../src';
 import { GaugeThemeMode } from '../src/types';
 
 const WebDemo: React.FC = () => {
@@ -15,6 +15,9 @@ const WebDemo: React.FC = () => {
   const [voltage1, setVoltage1] = useState(12.6);
   const [voltage2, setVoltage2] = useState(14.2);
   const [voltage3, setVoltage3] = useState(11.8);
+  const [fuelLevel1, setFuelLevel1] = useState(75);
+  const [fuelLevel2, setFuelLevel2] = useState(45);
+  const [fuelLevel3, setFuelLevel3] = useState(15);
   const [isAnimating, setIsAnimating] = useState(true);
   const [theme, setTheme] = useState<GaugeThemeMode>('dark');
 
@@ -67,6 +70,21 @@ const WebDemo: React.FC = () => {
         const change = (Math.random() - 0.5) * 0.4;
         return Math.max(9.0, Math.min(14.0, prev + change));
       });
+
+      setFuelLevel1(prev => {
+        const change = (Math.random() - 0.5) * 8;
+        return Math.max(50, Math.min(100, prev + change));
+      });
+      
+      setFuelLevel2(prev => {
+        const change = (Math.random() - 0.5) * 12;
+        return Math.max(25, Math.min(75, prev + change));
+      });
+      
+      setFuelLevel3(prev => {
+        const change = (Math.random() - 0.5) * 6;
+        return Math.max(5, Math.min(35, prev + change));
+      });
     }, 2000);
 
     return () => clearInterval(interval);
@@ -82,6 +100,9 @@ const WebDemo: React.FC = () => {
     setVoltage1(12.6);
     setVoltage2(14.2);
     setVoltage3(11.8);
+    setFuelLevel1(75);
+    setFuelLevel2(45);
+    setFuelLevel3(15);
   };
 
   const maxSpeeds = () => {
@@ -94,6 +115,9 @@ const WebDemo: React.FC = () => {
     setVoltage1(11.2);
     setVoltage2(11.5);
     setVoltage3(9.5);
+    setFuelLevel1(8);
+    setFuelLevel2(5);
+    setFuelLevel3(2);
   };
 
   return (
@@ -423,6 +447,78 @@ const WebDemo: React.FC = () => {
           </View>
           <Text style={styles.speedDisplay}>Current: {voltage3.toFixed(1)}V</Text>
         </View>
+
+        {/* Fuel Level - Percentage */}
+        <View style={styles.gaugeSection}>
+          <Text style={styles.gaugeTitle}>Fuel Level - Percentage</Text>
+          <Text style={styles.gaugeDescription}>0-100% • Low fuel warning at 20%</Text>
+          <View style={styles.gaugeWrapper}>
+            <GaugeFuel
+              fuelLevel={fuelLevel1}
+              lowFuelThreshold={20}
+              units="percentage"
+              size={{ width: 280, height: 140 }}
+              theme={theme}
+              colors={{
+                needle: '#2196F3',
+                redline: '#FF5722',
+                digitalSpeed: '#2196F3',
+              }}
+              showDigitalLevel={true}
+            />
+          </View>
+          <Text style={styles.speedDisplay}>Current: {fuelLevel1.toFixed(0)}%</Text>
+        </View>
+
+        {/* Fuel Level - Litres */}
+        <View style={styles.gaugeSection}>
+          <Text style={styles.gaugeTitle}>Fuel Level - Litres</Text>
+          <Text style={styles.gaugeDescription}>60L tank capacity • Low fuel warning at 25%</Text>
+          <View style={styles.gaugeWrapper}>
+            <GaugeFuel
+              fuelLevel={fuelLevel2}
+              tankCapacity={60}
+              lowFuelThreshold={25}
+              units="litres"
+              size={{ width: 280, height: 140 }}
+              theme={theme}
+              colors={{
+                needle: '#00BCD4',
+                redline: '#FF9800',
+                digitalSpeed: '#00BCD4',
+              }}
+              showDigitalLevel={true}
+            />
+          </View>
+          <Text style={styles.speedDisplay}>
+            Current: {(fuelLevel2 * 60 / 100).toFixed(1)}L ({fuelLevel2.toFixed(0)}%)
+          </Text>
+        </View>
+
+        {/* Fuel Level - Gallons */}
+        <View style={styles.gaugeSection}>
+          <Text style={styles.gaugeTitle}>Fuel Level - Gallons</Text>
+          <Text style={styles.gaugeDescription}>15.8 gal tank capacity • Low fuel warning at 15%</Text>
+          <View style={styles.gaugeWrapper}>
+            <GaugeFuel
+              fuelLevel={fuelLevel3}
+              tankCapacity={15.8}
+              lowFuelThreshold={15}
+              units="gallons"
+              size={{ width: 280, height: 140 }}
+              theme={theme}
+              colors={{
+                needle: '#FF6B35',
+                redline: '#F44336',
+                digitalSpeed: '#FF6B35',
+              }}
+              showDigitalLevel={true}
+            />
+          </View>
+          <Text style={styles.speedDisplay}>
+            Current: {(fuelLevel3 * 15.8 / 100).toFixed(1)} gal ({fuelLevel3.toFixed(0)}%)
+          </Text>
+        </View>
       </View>
 
       <View style={styles.footer}>
@@ -430,7 +526,7 @@ const WebDemo: React.FC = () => {
           🚀 Built with React Native • Running on React Native Web
         </Text>
         <Text style={styles.footerSubtext}>
-          This demo shows real-time animated speedometers, tachometers, and battery gauges with different themes and configurations
+          This demo shows real-time animated speedometers, tachometers, battery gauges, and fuel gauges with different themes and configurations
         </Text>
       </View>
     </ScrollView>
