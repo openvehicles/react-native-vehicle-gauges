@@ -91,3 +91,20 @@ export interface GaugeFuelProps {
   showDigitalLevel?: boolean;
   padding?: number; // Padding as percentage of radius (default 15%)
 }
+
+export type TemperatureUnits = 'celsius' | 'fahrenheit';
+
+export interface GaugeTemperatureProps {
+  temperature: number; // Current temperature
+  minTemperature?: number; // Minimum temperature (default -40°C/-40°F)
+  maxTemperature?: number; // Maximum temperature (default 120°C/250°F)
+  lowTemperature?: number; // Low temperature threshold (blue zone)
+  highTemperature?: number; // High temperature threshold (red zone)
+  units?: TemperatureUnits; // Display units (default 'celsius')
+  size?: GaugeSize;
+  theme?: GaugeThemeMode;
+  colors?: GaugeColors;
+  fonts?: GaugeFonts;
+  showDigitalTemperature?: boolean;
+  padding?: number; // Padding as percentage of radius (default 15%)
+}

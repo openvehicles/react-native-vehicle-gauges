@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native-web';
 
 // Import our gauge components directly - React Native Web handles the conversion
-import { GaugeSpeedometer, GaugeTachometer, GaugeBattery, GaugeFuel } from '../src';
+import { GaugeSpeedometer, GaugeTachometer, GaugeBattery, GaugeFuel, GaugeTemperature } from '../src';
 import { GaugeThemeMode } from '../src/types';
 
 const WebDemo: React.FC = () => {
@@ -18,6 +18,9 @@ const WebDemo: React.FC = () => {
   const [fuelLevel1, setFuelLevel1] = useState(75);
   const [fuelLevel2, setFuelLevel2] = useState(45);
   const [fuelLevel3, setFuelLevel3] = useState(15);
+  const [temp1, setTemp1] = useState(22);
+  const [temp2, setTemp2] = useState(85);
+  const [temp3, setTemp3] = useState(-15);
   const [isAnimating, setIsAnimating] = useState(true);
   const [theme, setTheme] = useState<GaugeThemeMode>('dark');
 
@@ -85,6 +88,21 @@ const WebDemo: React.FC = () => {
         const change = (Math.random() - 0.5) * 6;
         return Math.max(5, Math.min(35, prev + change));
       });
+
+      setTemp1(prev => {
+        const change = (Math.random() - 0.5) * 6;
+        return Math.max(15, Math.min(35, prev + change));
+      });
+      
+      setTemp2(prev => {
+        const change = (Math.random() - 0.5) * 15;
+        return Math.max(60, Math.min(110, prev + change));
+      });
+      
+      setTemp3(prev => {
+        const change = (Math.random() - 0.5) * 10;
+        return Math.max(-30, Math.min(10, prev + change));
+      });
     }, 2000);
 
     return () => clearInterval(interval);
@@ -103,6 +121,9 @@ const WebDemo: React.FC = () => {
     setFuelLevel1(75);
     setFuelLevel2(45);
     setFuelLevel3(15);
+    setTemp1(22);
+    setTemp2(85);
+    setTemp3(-15);
   };
 
   const maxSpeeds = () => {
@@ -118,6 +139,9 @@ const WebDemo: React.FC = () => {
     setFuelLevel1(8);
     setFuelLevel2(5);
     setFuelLevel3(2);
+    setTemp1(45);
+    setTemp2(115);
+    setTemp3(-35);
   };
 
   return (
@@ -519,6 +543,83 @@ const WebDemo: React.FC = () => {
             Current: {(fuelLevel3 * 15.8 / 100).toFixed(1)} gal ({fuelLevel3.toFixed(0)}%)
           </Text>
         </View>
+
+        {/* Room Temperature - Celsius */}
+        <View style={styles.gaugeSection}>
+          <Text style={styles.gaugeTitle}>Room Temperature</Text>
+          <Text style={styles.gaugeDescription}>15-35°C • Comfort zone 20-25°C</Text>
+          <View style={styles.gaugeWrapper}>
+            <GaugeTemperature
+              temperature={temp1}
+              minTemperature={15}
+              maxTemperature={35}
+              lowTemperature={18}
+              highTemperature={28}
+              units="celsius"
+              size={{ width: 280, height: 140 }}
+              theme={theme}
+              colors={{
+                needle: '#4CAF50',
+                redline: '#FF5722',
+                digitalSpeed: '#4CAF50',
+              }}
+              showDigitalTemperature={true}
+            />
+          </View>
+          <Text style={styles.speedDisplay}>Current: {temp1.toFixed(0)}°C</Text>
+        </View>
+
+        {/* Engine Temperature - Celsius */}
+        <View style={styles.gaugeSection}>
+          <Text style={styles.gaugeTitle}>Engine Temperature</Text>
+          <Text style={styles.gaugeDescription}>60-120°C • Operating range 80-100°C</Text>
+          <View style={styles.gaugeWrapper}>
+            <GaugeTemperature
+              temperature={temp2}
+              minTemperature={60}
+              maxTemperature={120}
+              lowTemperature={75}
+              highTemperature={105}
+              units="celsius"
+              size={{ width: 280, height: 140 }}
+              theme={theme}
+              colors={{
+                needle: '#FF9800',
+                redline: '#F44336',
+                digitalSpeed: '#FF9800',
+              }}
+              showDigitalTemperature={true}
+            />
+          </View>
+          <Text style={styles.speedDisplay}>Current: {temp2.toFixed(0)}°C</Text>
+        </View>
+
+        {/* Outside Temperature - Fahrenheit */}
+        <View style={styles.gaugeSection}>
+          <Text style={styles.gaugeTitle}>Outside Temperature</Text>
+          <Text style={styles.gaugeDescription}>-22 to 50°F • Freezing point 32°F</Text>
+          <View style={styles.gaugeWrapper}>
+            <GaugeTemperature
+              temperature={temp3}
+              minTemperature={-30}
+              maxTemperature={10}
+              lowTemperature={-10}
+              highTemperature={5}
+              units="fahrenheit"
+              size={{ width: 280, height: 140 }}
+              theme={theme}
+              colors={{
+                needle: '#2196F3',
+                redline: '#0066ff',
+                digitalSpeed: '#2196F3',
+              }}
+              showDigitalTemperature={true}
+            />
+          </View>
+          <Text style={styles.speedDisplay}>
+            Current: {temp3.toFixed(0)}°C ({((temp3 * 9/5) + 32).toFixed(0)}°F)
+          </Text>
+        </View>
       </View>
 
       <View style={styles.footer}>
@@ -526,7 +627,7 @@ const WebDemo: React.FC = () => {
           🚀 Built with React Native • Running on React Native Web
         </Text>
         <Text style={styles.footerSubtext}>
-          This demo shows real-time animated speedometers, tachometers, battery gauges, and fuel gauges with different themes and configurations
+          This demo shows real-time animated speedometers, tachometers, battery gauges, fuel gauges, and temperature gauges with different themes and configurations
         </Text>
       </View>
     </ScrollView>

@@ -161,13 +161,14 @@ interface GaugeFonts {
 ```typescript
 import React from 'react';
 import { View } from 'react-native';
-import { GaugeSpeedometer, GaugeTachometer, GaugeBattery, GaugeFuel } from 'react-native-vehicle-gauges';
+import { GaugeSpeedometer, GaugeTachometer, GaugeBattery, GaugeFuel, GaugeTemperature } from 'react-native-vehicle-gauges';
 
 export default function App() {
   const [speed, setSpeed] = React.useState(65);
   const [rpm, setRpm] = React.useState(3500);
   const [voltage, setVoltage] = React.useState(12.6);
   const [fuelLevel, setFuelLevel] = React.useState(75);
+  const [temperature, setTemperature] = React.useState(85);
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
@@ -227,6 +228,22 @@ export default function App() {
           needle: '#2196F3',
           redline: '#FF5722',
           digitalSpeed: '#2196F3'
+        }}
+      />
+      
+      <GaugeTemperature
+        temperature={temperature}
+        minTemperature={60}
+        maxTemperature={120}
+        lowTemperature={75}
+        highTemperature={105}
+        units="celsius"
+        size={{ width: 300, height: 150 }}
+        showDigitalTemperature={true}
+        colors={{
+          needle: '#FF9800',
+          redline: '#F44336',
+          digitalSpeed: '#FF9800'
         }}
       />
     </View>
@@ -327,7 +344,7 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 - [x] ~~Battery voltage gauge~~ ✅ **Completed**
 - [x] ~~Theme system~~ ✅ **Completed**
 - [x] ~~Fuel gauge~~ ✅ **Completed**
-- [ ] Temperature gauge
+- [x] ~~Temperature gauge~~ ✅ **Completed**
 - [ ] Oil pressure gauge
 
 ## Support
