@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native-web';
 
 // Import our gauge components directly - React Native Web handles the conversion
-import { GaugeSpeedometer, GaugeTachometer, GaugeBattery, GaugeFuel, GaugeTemperature } from '../src';
+import { GaugeSpeedometer, GaugeTachometer, GaugeBattery, GaugeFuel, GaugeTemperature, GaugeOilPressure } from '../src';
 import { GaugeThemeMode } from '../src/types';
 
 const WebDemo: React.FC = () => {
@@ -21,6 +21,9 @@ const WebDemo: React.FC = () => {
   const [temp1, setTemp1] = useState(22);
   const [temp2, setTemp2] = useState(85);
   const [temp3, setTemp3] = useState(-15);
+  const [pressure1, setPressure1] = useState(35);
+  const [pressure2, setPressure2] = useState(45);
+  const [pressure3, setPressure3] = useState(2.5);
   const [isAnimating, setIsAnimating] = useState(true);
   const [theme, setTheme] = useState<GaugeThemeMode>('dark');
 
@@ -103,6 +106,21 @@ const WebDemo: React.FC = () => {
         const change = (Math.random() - 0.5) * 10;
         return Math.max(-30, Math.min(10, prev + change));
       });
+
+      setPressure1(prev => {
+        const change = (Math.random() - 0.5) * 8;
+        return Math.max(10, Math.min(60, prev + change));
+      });
+      
+      setPressure2(prev => {
+        const change = (Math.random() - 0.5) * 12;
+        return Math.max(20, Math.min(80, prev + change));
+      });
+      
+      setPressure3(prev => {
+        const change = (Math.random() - 0.5) * 0.8;
+        return Math.max(1.0, Math.min(5.5, prev + change));
+      });
     }, 2000);
 
     return () => clearInterval(interval);
@@ -124,6 +142,9 @@ const WebDemo: React.FC = () => {
     setTemp1(22);
     setTemp2(85);
     setTemp3(-15);
+    setPressure1(35);
+    setPressure2(45);
+    setPressure3(2.5);
   };
 
   const maxSpeeds = () => {
@@ -142,6 +163,9 @@ const WebDemo: React.FC = () => {
     setTemp1(45);
     setTemp2(115);
     setTemp3(-35);
+    setPressure1(8);
+    setPressure2(85);
+    setPressure3(0.5);
   };
 
   return (
@@ -620,6 +644,81 @@ const WebDemo: React.FC = () => {
             Current: {temp3.toFixed(0)}°C ({((temp3 * 9/5) + 32).toFixed(0)}°F)
           </Text>
         </View>
+
+        {/* Standard Engine Oil Pressure - PSI */}
+        <View style={styles.gaugeSection}>
+          <Text style={styles.gaugeTitle}>Standard Engine Oil Pressure</Text>
+          <Text style={styles.gaugeDescription}>0-80 PSI • Warning zones: &lt;15 PSI, &gt;70 PSI</Text>
+          <View style={styles.gaugeWrapper}>
+            <GaugeOilPressure
+              pressure={pressure1}
+              minPressure={0}
+              maxPressure={80}
+              lowPressure={15}
+              highPressure={70}
+              units="psi"
+              size={{ width: 280, height: 140 }}
+              theme={theme}
+              colors={{
+                needle: '#4CAF50',
+                redline: '#FF5722',
+                digitalSpeed: '#4CAF50',
+              }}
+              showDigitalPressure={true}
+            />
+          </View>
+          <Text style={styles.speedDisplay}>Current: {pressure1.toFixed(0)} PSI</Text>
+        </View>
+
+        {/* Performance Engine Oil Pressure - PSI */}
+        <View style={styles.gaugeSection}>
+          <Text style={styles.gaugeTitle}>Performance Engine Oil Pressure</Text>
+          <Text style={styles.gaugeDescription}>0-100 PSI • Warning zones: &lt;20 PSI, &gt;75 PSI</Text>
+          <View style={styles.gaugeWrapper}>
+            <GaugeOilPressure
+              pressure={pressure2}
+              minPressure={0}
+              maxPressure={100}
+              lowPressure={20}
+              highPressure={75}
+              units="psi"
+              size={{ width: 280, height: 140 }}
+              theme={theme}
+              colors={{
+                needle: '#FF9800',
+                redline: '#F44336',
+                digitalSpeed: '#FF9800',
+              }}
+              showDigitalPressure={true}
+            />
+          </View>
+          <Text style={styles.speedDisplay}>Current: {pressure2.toFixed(0)} PSI</Text>
+        </View>
+
+        {/* Metric Oil Pressure - Bar */}
+        <View style={styles.gaugeSection}>
+          <Text style={styles.gaugeTitle}>Oil Pressure - Metric (Bar)</Text>
+          <Text style={styles.gaugeDescription}>0-5.5 bar • Warning zones: &lt;1.0 bar, &gt;4.8 bar</Text>
+          <View style={styles.gaugeWrapper}>
+            <GaugeOilPressure
+              pressure={pressure3 * 14.5038} // Convert bar to PSI for internal calculation
+              minPressure={0}
+              maxPressure={5.5 * 14.5038}
+              lowPressure={1.0 * 14.5038}
+              highPressure={4.8 * 14.5038}
+              units="bar"
+              size={{ width: 280, height: 140 }}
+              theme={theme}
+              colors={{
+                needle: '#2196F3',
+                redline: '#F44336',
+                digitalSpeed: '#2196F3',
+              }}
+              showDigitalPressure={true}
+            />
+          </View>
+          <Text style={styles.speedDisplay}>Current: {pressure3.toFixed(1)} bar</Text>
+        </View>
       </View>
 
       <View style={styles.footer}>
@@ -627,7 +726,7 @@ const WebDemo: React.FC = () => {
           🚀 Built with React Native • Running on React Native Web
         </Text>
         <Text style={styles.footerSubtext}>
-          This demo shows real-time animated speedometers, tachometers, battery gauges, fuel gauges, and temperature gauges with different themes and configurations
+          This demo shows real-time animated speedometers, tachometers, battery gauges, fuel gauges, temperature gauges, and oil pressure gauges with different themes and configurations
         </Text>
       </View>
     </ScrollView>

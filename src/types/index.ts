@@ -108,3 +108,20 @@ export interface GaugeTemperatureProps {
   showDigitalTemperature?: boolean;
   padding?: number; // Padding as percentage of radius (default 15%)
 }
+
+export type PressureUnits = 'psi' | 'bar' | 'kpa';
+
+export interface GaugeOilPressureProps {
+  pressure: number; // Current oil pressure
+  minPressure?: number; // Minimum pressure (default 0)
+  maxPressure?: number; // Maximum pressure (default 100 psi/7 bar/700 kPa)
+  lowPressure?: number; // Low pressure threshold (red zone on left)
+  highPressure?: number; // High pressure threshold (red zone on right)
+  units?: PressureUnits; // Display units (default 'psi')
+  size?: GaugeSize;
+  theme?: GaugeThemeMode;
+  colors?: GaugeColors;
+  fonts?: GaugeFonts;
+  showDigitalPressure?: boolean;
+  padding?: number; // Padding as percentage of radius (default 15%)
+}
