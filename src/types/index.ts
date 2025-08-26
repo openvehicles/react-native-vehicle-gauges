@@ -138,3 +138,5 @@ export interface GaugeGearProps {
   fonts?: GaugeFonts;
   padding?: number; // Padding as percentage of width/height (default 10%)
 }
+
+
