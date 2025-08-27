@@ -93,8 +93,8 @@ export const GaugeTemperature: React.FC<GaugeTemperatureProps> = ({
 
   // Generate tick marks and numbers
   const generateTicks = () => {
-    const ticks = [];
-    const numbers = [];
+    const ticks : any[] = [];
+    const numbers : any[] = [];
     
     // Determine tick intervals based on temperature range for half-circle layout
     let majorTickInterval: number;

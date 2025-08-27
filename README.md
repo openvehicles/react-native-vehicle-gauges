@@ -2,6 +2,17 @@
 
 A comprehensive suite of React Native components for displaying vehicle gauge clusters as seen in cars and motorcycles. Create stunning, customizable dashboard displays with authentic automotive styling.
 
+## DISCLAIMER
+
+This is a very early version of this package, only recently released and only very
+recently making its way into a late stage development application. Production ready
+code is a while away. If you are not ready for this to not work, or for the next version
+to change the API in ways that will break your code, then please don't use this library.
+
+That said, contributions are welcome - via the github repository.
+
+N.B. Any bugs are probably the Cursor AI's, not mine.
+
 ## Features
 
 - 🚗 **Authentic Design**: Components inspired by real vehicle dashboards

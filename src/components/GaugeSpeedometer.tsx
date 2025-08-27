@@ -73,8 +73,8 @@ export const GaugeSpeedometer: React.FC<GaugeSpeedometerProps> = ({
 
   // Generate tick marks and numbers
   const generateTicks = () => {
-    const ticks = [];
-    const numbers = [];
+    const ticks : any[] = [];
+    const numbers : any[] = [];
     const majorTickInterval = speedRange <= 100 ? 10 : speedRange <= 200 ? 20 : 50;
     const minorTickInterval = majorTickInterval / 5;
 

@@ -72,8 +72,8 @@ export const GaugeTachometer: React.FC<GaugeTachometerProps> = ({
 
   // Generate tick marks and numbers
   const generateTicks = () => {
-    const ticks = [];
-    const numbers = [];
+    const ticks : any[] = [];
+    const numbers : any[] = [];
     
     // Determine tick intervals based on RPM range
     let majorTickInterval: number;

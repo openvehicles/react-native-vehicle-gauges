@@ -76,8 +76,8 @@ export const GaugeFuel: React.FC<GaugeFuelProps> = ({
 
   // Generate tick marks and numbers for fuel levels
   const generateTicks = () => {
-    const ticks = [];
-    const numbers = [];
+    const ticks : any[] = [];
+    const numbers : any[] = [];
 
     // Major ticks at 0%, 25%, 50%, 75%, 100%
     const majorTicks = [0, 25, 50, 75, 100];
