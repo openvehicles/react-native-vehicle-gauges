@@ -38,6 +38,7 @@ export const GaugeFuel: React.FC<GaugeFuelProps> = ({
   tankCapacity,
   lowFuelThreshold = 25.0,
   units = 'percentage',
+  label = 'FUEL',
   size = { width: '100%', height: '100%' },
   theme = 'auto',
   colors = {},
@@ -305,7 +306,7 @@ export const GaugeFuel: React.FC<GaugeFuelProps> = ({
               },
             ]}
           >
-            FUEL
+            {label}
           </Text>
         </View>
       </View>

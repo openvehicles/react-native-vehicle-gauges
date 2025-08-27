@@ -29,7 +29,7 @@ const DEFAULT_FONTS = {
         fontWeight: 'normal',
     },
 };
-export const GaugeFuel = ({ fuelLevel = 50.0, tankCapacity, lowFuelThreshold = 25.0, units = 'percentage', size = { width: '100%', height: '100%' }, theme = 'auto', colors = {}, fonts = {}, showDigitalLevel = true, padding = 15, // Default 15% padding
+export const GaugeFuel = ({ fuelLevel = 50.0, tankCapacity, lowFuelThreshold = 25.0, units = 'percentage', label = 'FUEL', size = { width: '100%', height: '100%' }, theme = 'auto', colors = {}, fonts = {}, showDigitalLevel = true, padding = 15, // Default 15% padding
  }) => {
     const mergedColors = resolveThemeColors(colors, theme);
     const mergedFonts = {
@@ -217,7 +217,7 @@ export const GaugeFuel = ({ fuelLevel = 50.0, tankCapacity, lowFuelThreshold = 2
                 fontWeight: mergedFonts.units.fontWeight,
             },
         ]}>
-            FUEL
+            {label}
           </Text>
         </View>
       </View>

@@ -577,14 +577,15 @@ const WebDemo: React.FC = () => {
 
         {/* Fuel Level - Gallons */}
         <View style={styles.gaugeSection}>
-          <Text style={styles.gaugeTitle}>Fuel Level - Gallons</Text>
-          <Text style={styles.gaugeDescription}>15.8 gal tank capacity • Low fuel warning at 15%</Text>
+          <Text style={styles.gaugeTitle}>Fuel Level - Gallons (Custom Label)</Text>
+          <Text style={styles.gaugeDescription}>15.8 gal tank capacity • Low fuel warning at 15% • "GASOLINE" label</Text>
           <View style={styles.gaugeWrapper}>
             <GaugeFuel
               fuelLevel={fuelLevel3}
               tankCapacity={15.8}
               lowFuelThreshold={15}
               units="gallons"
+              label="GASOLINE" // Custom label instead of default "FUEL"
               size={{ width: 280, height: 140 }}
               theme={theme}
               colors={{

@@ -75,6 +75,7 @@ export interface GaugeFuelProps {
     tankCapacity?: number;
     lowFuelThreshold?: number;
     units?: FuelUnits;
+    label?: string;
     size?: GaugeSize;
     theme?: GaugeThemeMode;
     colors?: GaugeColors;

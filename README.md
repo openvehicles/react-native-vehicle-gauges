@@ -235,6 +235,7 @@ export default function App() {
         tankCapacity={60} // 60 litres
         lowFuelThreshold={20}
         units="litres"
+        label="FUEL" // Customizable label (default: 'FUEL')
         size={{ width: 300, height: 150 }}
         showDigitalLevel={true}
         colors={{

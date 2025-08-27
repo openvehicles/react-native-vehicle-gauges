@@ -84,6 +84,7 @@ export interface GaugeFuelProps {
   tankCapacity?: number; // Tank capacity in litres or gallons (for display)
   lowFuelThreshold?: number; // Warning zone threshold (default 25%)
   units?: FuelUnits; // Display units (default 'percentage')
+  label?: string; // Gauge label (default 'FUEL')
   size?: GaugeSize;
   theme?: GaugeThemeMode;
   colors?: GaugeColors;
