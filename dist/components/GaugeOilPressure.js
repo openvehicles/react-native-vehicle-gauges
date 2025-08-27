@@ -29,7 +29,7 @@ const DEFAULT_FONTS = {
         fontWeight: 'normal',
     },
 };
-export const GaugeOilPressure = ({ pressure = 30, minPressure = 0, maxPressure = 100, lowPressure = 15, highPressure = 80, units = 'psi', size = { width: '100%', height: '100%' }, theme = 'auto', colors = {}, fonts = {}, showDigitalPressure = true, padding = 15, // Default 15% padding
+export const GaugeOilPressure = ({ pressure = 30, minPressure = 0, maxPressure = 100, lowPressure = 15, highPressure = 80, units = 'psi', label = 'OIL PRESSURE', size = { width: '100%', height: '100%' }, theme = 'auto', colors = {}, fonts = {}, showDigitalPressure = true, padding = 15, // Default 15% padding
  }) => {
     const mergedColors = resolveThemeColors(colors, theme);
     const mergedFonts = {
@@ -267,7 +267,7 @@ export const GaugeOilPressure = ({ pressure = 30, minPressure = 0, maxPressure =
                 fontWeight: mergedFonts.units.fontWeight,
             },
         ]}>
-            OIL PRESSURE
+            {label}
           </Text>
         </View>
       </View>

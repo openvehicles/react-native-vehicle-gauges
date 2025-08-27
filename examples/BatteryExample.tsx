@@ -91,6 +91,7 @@ export const BatteryExample: React.FC = () => {
             minVoltage={10.0}
             maxVoltage={16.0}
             lowVoltage={12.0}
+            label="BATTERY" // Default label
             size={{ width: 280, height: 140 }}
             colors={{
               background: '#1a2d1a',
@@ -157,14 +158,15 @@ export const BatteryExample: React.FC = () => {
 
       {/* Critical Battery Monitor */}
       <View style={styles.gaugeSection}>
-        <Text style={styles.gaugeTitle}>Critical Battery Monitor</Text>
-        <Text style={styles.gaugeDescription}>9.0-14.0V • High sensitivity for low voltage detection</Text>
+        <Text style={styles.gaugeTitle}>Critical Battery Monitor (Custom Label)</Text>
+        <Text style={styles.gaugeDescription}>9.0-14.0V • High sensitivity for low voltage detection • "12V SYSTEM" label</Text>
         <View style={styles.gaugeWrapper}>
           <GaugeBattery
             voltage={voltage3}
             minVoltage={9.0}
             maxVoltage={14.0}
             lowVoltage={11.5}
+            label="12V SYSTEM" // Custom label instead of default "BATTERY"
             size={{ width: 280, height: 140 }}
             colors={{
               background: '#2d1a1a',

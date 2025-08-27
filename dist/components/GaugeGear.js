@@ -28,7 +28,7 @@ const DEFAULT_FONTS = {
         fontWeight: 'normal',
     },
 };
-export const GaugeGear = ({ currentGear = 'P', gears = ['P', 'R', 'N', 'D'], orientation = 'portrait', size = { width: '100%', height: '100%' }, theme = 'auto', colors = {}, fonts = {}, padding = 10, // Default 10% padding
+export const GaugeGear = ({ currentGear = 'P', gears = ['P', 'R', 'N', 'D'], orientation = 'portrait', label = 'GEAR', size = { width: '100%', height: '100%' }, theme = 'auto', colors = {}, fonts = {}, padding = 10, // Default 10% padding
  }) => {
     const mergedColors = resolveThemeColors(colors, theme);
     const mergedFonts = {
@@ -74,7 +74,7 @@ export const GaugeGear = ({ currentGear = 'P', gears = ['P', 'R', 'N', 'D'], ori
                 fontWeight: mergedFonts.units.fontWeight,
             },
         ]}>
-            GEAR
+            {label}
           </Text>
         </View>
 

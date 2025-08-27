@@ -29,7 +29,7 @@ const DEFAULT_FONTS = {
         fontWeight: 'normal',
     },
 };
-export const GaugeTemperature = ({ temperature = 20, minTemperature = -40, maxTemperature = 120, lowTemperature = 0, highTemperature = 100, units = 'celsius', size = { width: '100%', height: '100%' }, theme = 'auto', colors = {}, fonts = {}, showDigitalTemperature = true, padding = 15, // Default 15% padding
+export const GaugeTemperature = ({ temperature = 20, minTemperature = -40, maxTemperature = 120, lowTemperature = 0, highTemperature = 100, units = 'celsius', label = 'TEMP', size = { width: '100%', height: '100%' }, theme = 'auto', colors = {}, fonts = {}, showDigitalTemperature = true, padding = 15, // Default 15% padding
  }) => {
     const mergedColors = resolveThemeColors(colors, theme);
     const mergedFonts = {
@@ -233,7 +233,7 @@ export const GaugeTemperature = ({ temperature = 20, minTemperature = -40, maxTe
                 fontWeight: mergedFonts.units.fontWeight,
             },
         ]}>
-            TEMP
+            {label}
           </Text>
         </View>
       </View>

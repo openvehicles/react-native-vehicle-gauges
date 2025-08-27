@@ -62,6 +62,7 @@ export interface GaugeBatteryProps {
     minVoltage?: number;
     maxVoltage?: number;
     lowVoltage?: number;
+    label?: string;
     size?: GaugeSize;
     theme?: GaugeThemeMode;
     colors?: GaugeColors;
@@ -91,6 +92,7 @@ export interface GaugeTemperatureProps {
     lowTemperature?: number;
     highTemperature?: number;
     units?: TemperatureUnits;
+    label?: string;
     size?: GaugeSize;
     theme?: GaugeThemeMode;
     colors?: GaugeColors;
@@ -106,6 +108,7 @@ export interface GaugeOilPressureProps {
     lowPressure?: number;
     highPressure?: number;
     units?: PressureUnits;
+    label?: string;
     size?: GaugeSize;
     theme?: GaugeThemeMode;
     colors?: GaugeColors;
@@ -118,6 +121,7 @@ export interface GaugeGearProps {
     currentGear: string;
     gears?: string[];
     orientation?: GaugeGearOrientation;
+    label?: string;
     size?: GaugeSize;
     theme?: GaugeThemeMode;
     colors?: GaugeColors;

@@ -38,6 +38,7 @@ export const GaugeBattery: React.FC<GaugeBatteryProps> = ({
   minVoltage = 10.0,
   maxVoltage = 16.0,
   lowVoltage,
+  label = 'BATTERY',
   size = { width: '100%', height: '100%' },
   theme = 'auto',
   colors = {},
@@ -294,7 +295,7 @@ export const GaugeBattery: React.FC<GaugeBatteryProps> = ({
               },
             ]}
           >
-            BATTERY
+            {label}
           </Text>
         </View>
       </View>

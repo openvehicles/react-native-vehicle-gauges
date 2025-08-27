@@ -29,7 +29,7 @@ const DEFAULT_FONTS = {
         fontWeight: 'normal',
     },
 };
-export const GaugeBattery = ({ voltage = 12.0, minVoltage = 10.0, maxVoltage = 16.0, lowVoltage, size = { width: '100%', height: '100%' }, theme = 'auto', colors = {}, fonts = {}, showDigitalVoltage = true, padding = 15, // Default 15% padding
+export const GaugeBattery = ({ voltage = 12.0, minVoltage = 10.0, maxVoltage = 16.0, lowVoltage, label = 'BATTERY', size = { width: '100%', height: '100%' }, theme = 'auto', colors = {}, fonts = {}, showDigitalVoltage = true, padding = 15, // Default 15% padding
  }) => {
     const mergedColors = resolveThemeColors(colors, theme);
     const mergedFonts = {
@@ -207,7 +207,7 @@ export const GaugeBattery = ({ voltage = 12.0, minVoltage = 10.0, maxVoltage = 1
                 fontWeight: mergedFonts.units.fontWeight,
             },
         ]}>
-            BATTERY
+            {label}
           </Text>
         </View>
       </View>

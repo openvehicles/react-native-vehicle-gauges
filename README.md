@@ -221,6 +221,7 @@ export default function App() {
         minVoltage={10.0}
         maxVoltage={16.0}
         lowVoltage={12.0}
+        label="BATTERY" // Customizable label (default: 'BATTERY')
         size={{ width: 300, height: 150 }}
         showDigitalVoltage={true}
         colors={{
@@ -252,6 +253,7 @@ export default function App() {
         lowTemperature={75}
         highTemperature={105}
         units="celsius"
+        label="TEMP" // Customizable label (default: 'TEMP')
         size={{ width: 300, height: 150 }}
         showDigitalTemperature={true}
         colors={{
@@ -268,6 +270,7 @@ export default function App() {
         lowPressure={15}
         highPressure={70}
         units="psi"
+        label="OIL PRESSURE" // Customizable label (default: 'OIL PRESSURE')
         size={{ width: 300, height: 150 }}
         showDigitalPressure={true}
         colors={{
@@ -280,6 +283,7 @@ export default function App() {
       <GaugeGear
         currentGear={currentGear}
         gears={['P', 'R', 'N', 'D']}
+        label="GEAR" // Customizable label (default: 'GEAR')
         size={{ width: 120, height: 300 }}
         colors={{
           digitalSpeed: '#4CAF50'

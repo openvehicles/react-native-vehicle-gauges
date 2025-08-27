@@ -190,8 +190,8 @@ export const TemperatureExample: React.FC = () => {
 
       {/* Outside Temperature - Fahrenheit */}
       <View style={styles.gaugeSection}>
-        <Text style={styles.gaugeTitle}>Outside Temperature</Text>
-        <Text style={styles.gaugeDescription}>-22 to 50°F • Freezing point 32°F</Text>
+        <Text style={styles.gaugeTitle}>Outside Temperature (Custom Label)</Text>
+        <Text style={styles.gaugeDescription}>"-22 to 50°F • Freezing point 32°F • AMBIENT"</Text>
         <View style={styles.gaugeWrapper}>
           <GaugeTemperature
             temperature={temp3}
@@ -200,6 +200,7 @@ export const TemperatureExample: React.FC = () => {
             lowTemperature={-10}
             highTemperature={5}
             units="fahrenheit"
+            label="AMBIENT" // Custom label instead of default "TEMP"
             size={{ width: 280, height: 140 }}
             colors={{
               background: '#2d1a1a',

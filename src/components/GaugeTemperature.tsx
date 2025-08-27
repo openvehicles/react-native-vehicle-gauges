@@ -40,6 +40,7 @@ export const GaugeTemperature: React.FC<GaugeTemperatureProps> = ({
   lowTemperature = 0,
   highTemperature = 100,
   units = 'celsius',
+  label = 'TEMP',
   size = { width: '100%', height: '100%' },
   theme = 'auto',
   colors = {},
@@ -323,7 +324,7 @@ export const GaugeTemperature: React.FC<GaugeTemperatureProps> = ({
               },
             ]}
           >
-            TEMP
+            {label}
           </Text>
         </View>
       </View>

@@ -1,1 +1,1 @@
-{"version":3,"file":"GaugeBattery.d.ts","sourceRoot":"","sources":["../../src/components/GaugeBattery.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAG1B,OAAO,EAAE,iBAAiB,EAA2B,MAAM,UAAU,CAAC;AAgCtE,eAAO,MAAM,YAAY,EAAE,KAAK,CAAC,EAAE,CAAC,iBAAiB,CA2QpD,CAAC"}
+{"version":3,"file":"GaugeBattery.d.ts","sourceRoot":"","sources":["../../src/components/GaugeBattery.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAG1B,OAAO,EAAE,iBAAiB,EAA2B,MAAM,UAAU,CAAC;AAgCtE,eAAO,MAAM,YAAY,EAAE,KAAK,CAAC,EAAE,CAAC,iBAAiB,CA4QpD,CAAC"}

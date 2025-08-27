@@ -207,12 +207,13 @@ export const GearExample: React.FC = () => {
 
         {/* CVT Transmission */}
         <View style={styles.gaugeSection}>
-          <Text style={styles.gaugeTitle}>CVT Transmission</Text>
-          <Text style={styles.gaugeDescription}>Continuously Variable Transmission</Text>
+          <Text style={styles.gaugeTitle}>CVT Transmission (Custom Label)</Text>
+          <Text style={styles.gaugeDescription}>Continuously Variable Transmission • "CVT" label</Text>
           <View style={styles.gaugeWrapper}>
             <GaugeGear
               currentGear={gear3}
               gears={cvtGears}
+              label="CVT" // Custom label instead of default "GEAR"
               size={{ width: 120, height: 300 }}
               colors={{
                 background: '#2d1a1a',

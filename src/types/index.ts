@@ -69,6 +69,7 @@ export interface GaugeBatteryProps {
   minVoltage?: number;
   maxVoltage?: number;
   lowVoltage?: number; // Warning zone threshold
+  label?: string; // Gauge label (default 'BATTERY')
   size?: GaugeSize;
   theme?: GaugeThemeMode;
   colors?: GaugeColors;
@@ -102,6 +103,7 @@ export interface GaugeTemperatureProps {
   lowTemperature?: number; // Low temperature threshold (blue zone)
   highTemperature?: number; // High temperature threshold (red zone)
   units?: TemperatureUnits; // Display units (default 'celsius')
+  label?: string; // Gauge label (default 'TEMP')
   size?: GaugeSize;
   theme?: GaugeThemeMode;
   colors?: GaugeColors;
@@ -119,6 +121,7 @@ export interface GaugeOilPressureProps {
   lowPressure?: number; // Low pressure threshold (red zone on left)
   highPressure?: number; // High pressure threshold (red zone on right)
   units?: PressureUnits; // Display units (default 'psi')
+  label?: string; // Gauge label (default 'OIL PRESSURE')
   size?: GaugeSize;
   theme?: GaugeThemeMode;
   colors?: GaugeColors;
@@ -133,6 +136,7 @@ export interface GaugeGearProps {
   currentGear: string; // Current selected gear (e.g., 'P', 'R', 'N', 'D')
   gears?: string[]; // Available gears (default ['P', 'R', 'N', 'D'])
   orientation?: GaugeGearOrientation; // Layout orientation (default 'portrait')
+  label?: string; // Gauge label (default 'GEAR')
   size?: GaugeSize;
   theme?: GaugeThemeMode;
   colors?: GaugeColors;

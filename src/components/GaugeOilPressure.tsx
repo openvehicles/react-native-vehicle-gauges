@@ -40,6 +40,7 @@ export const GaugeOilPressure: React.FC<GaugeOilPressureProps> = ({
   lowPressure = 15,
   highPressure = 80,
   units = 'psi',
+  label = 'OIL PRESSURE',
   size = { width: '100%', height: '100%' },
   theme = 'auto',
   colors = {},
@@ -354,7 +355,7 @@ export const GaugeOilPressure: React.FC<GaugeOilPressureProps> = ({
               },
             ]}
           >
-            OIL PRESSURE
+            {label}
           </Text>
         </View>
       </View>

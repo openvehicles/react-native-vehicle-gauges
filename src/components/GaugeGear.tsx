@@ -36,6 +36,7 @@ export const GaugeGear: React.FC<GaugeGearProps> = ({
   currentGear = 'P',
   gears = ['P', 'R', 'N', 'D'],
   orientation = 'portrait',
+  label = 'GEAR',
   size = { width: '100%', height: '100%' },
   theme = 'auto',
   colors = {},
@@ -96,7 +97,7 @@ export const GaugeGear: React.FC<GaugeGearProps> = ({
               },
             ]}
           >
-            GEAR
+            {label}
           </Text>
         </View>
 
