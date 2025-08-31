@@ -33,6 +33,25 @@ const DEFAULT_FONTS: Required<GaugeFonts> = {
   },
 };
 
+/**
+ * GaugeOilPressure - A half-circle pressure gauge with dual warning zones for engine safety
+ * 
+ * Features:
+ * - Half-circle design optimized for automotive engine monitoring
+ * - Dual red warning zones: low pressure (left) and high pressure (right)
+ * - Multi-unit support: PSI, Bar, kPa with automatic conversion
+ * - Smart tick intervals adapted to pressure ranges and units
+ * - Critical safety focus with prominent warning zone coloring
+ * - Precision display formatting based on selected units
+ * 
+ * Design Notes:
+ * - Unique dual-zone warning system (most gauges have single redline)
+ * - Unit conversion: PSI base → Bar (*0.0689476) → kPa (*6.89476)
+ * - Red zones for both dangerously low oil pressure and excessive pressure
+ * - Display precision: Bar (1 decimal), kPa/PSI (integer), for readability
+ * - Tick intervals: 5 (≤20), 10 (≤50), 20 (≤100), 50 (>100) based on range
+ * - Color coding extends to both tick marks and number labels
+ */
 export const GaugeOilPressure: React.FC<GaugeOilPressureProps> = ({
   pressure = 30,
   minPressure = 0,
@@ -47,6 +66,12 @@ export const GaugeOilPressure: React.FC<GaugeOilPressureProps> = ({
   fonts = {},
   showDigitalPressure = true,
   padding = 15, // Default 15% padding
+  needleLength,
+  tickLengthMajor = 15,
+  tickLengthMinor = 8,
+  centerDotRadius = 8,
+  digitalDisplayPosition = 35,
+  labelPosition = 75,
 }) => {
   const mergedColors = resolveThemeColors(colors, theme);
   const mergedFonts = {
@@ -127,7 +152,7 @@ export const GaugeOilPressure: React.FC<GaugeOilPressureProps> = ({
       const angle = arcStartAngle + ((i - displayMinPressure) / pressureRange) * totalAngle;
       const angleRad = toRadians(angle);
       
-      const innerRadius = radius - (isMajor ? 15 : 8);
+      const innerRadius = radius - (isMajor ? tickLengthMajor : tickLengthMinor);
       const outerRadius = radius;
       
       const x1 = centerX + innerRadius * Math.cos(angleRad);
@@ -222,9 +247,9 @@ export const GaugeOilPressure: React.FC<GaugeOilPressureProps> = ({
   // Generate needle
   const generateNeedle = () => {
     const needleAngleRad = toRadians(needleAngle);
-    const needleLength = radius - 20; // Proper needle length with some clearance
-    const needleTipX = centerX + needleLength * Math.cos(needleAngleRad);
-    const needleTipY = centerY + needleLength * Math.sin(needleAngleRad);
+    const actualNeedleLength = needleLength ?? (radius - 20); // Proper needle length with some clearance
+    const needleTipX = centerX + actualNeedleLength * Math.cos(needleAngleRad);
+    const needleTipY = centerY + actualNeedleLength * Math.sin(needleAngleRad);
 
     // Create needle base points
     const baseWidth = 3;
@@ -295,7 +320,7 @@ export const GaugeOilPressure: React.FC<GaugeOilPressureProps> = ({
           <Circle
             cx={centerX}
             cy={centerY}
-            r="8"
+            r={centerDotRadius}
             fill={mergedColors.needle}
           />
           
@@ -312,7 +337,7 @@ export const GaugeOilPressure: React.FC<GaugeOilPressureProps> = ({
         
         {/* Digital pressure display */}
         {showDigitalPressure && (
-          <View style={styles.digitalPressureContainer}>
+          <View style={[styles.digitalPressureContainer, { bottom: digitalDisplayPosition }]}>
             <Text
               style={[
                 styles.digitalPressure,
@@ -343,7 +368,7 @@ export const GaugeOilPressure: React.FC<GaugeOilPressureProps> = ({
         )}
 
         {/* Oil pressure indicator */}
-        <View style={styles.oilPressureContainer}>
+        <View style={[styles.oilPressureContainer, { bottom: labelPosition }]}>
           <Text
             style={[
               styles.oilPressureText,
@@ -380,7 +405,6 @@ const styles = StyleSheet.create({
   },
   digitalPressureContainer: {
     position: 'absolute',
-    bottom: 35,
     alignItems: 'center',
   },
   digitalPressure: {
@@ -392,7 +416,6 @@ const styles = StyleSheet.create({
   },
   oilPressureContainer: {
     position: 'absolute',
-    bottom: 75, // Position above digital display
     alignItems: 'center',
   },
   oilPressureText: {

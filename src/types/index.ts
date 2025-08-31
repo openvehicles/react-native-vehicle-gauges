@@ -43,12 +43,19 @@ export interface GaugeSpeedometerProps {
   maxSpeed?: number;
   redlineSpeed?: number;
   units?: SpeedUnits;
+  label?: string; // Gauge label (default 'SPEED')
   size?: GaugeSize;
   theme?: GaugeThemeMode;
   colors?: GaugeColors;
   fonts?: GaugeFonts;
   showDigitalSpeed?: boolean;
   padding?: number; // Padding as percentage of radius (default 15%)
+  needleLength?: number; // Needle length as pixels from center (default calculated)
+  tickLengthMajor?: number; // Major tick length in pixels (default 15)
+  tickLengthMinor?: number; // Minor tick length in pixels (default 8)
+  centerDotRadius?: number; // Center dot radius in pixels (default 8)
+  digitalDisplayPosition?: number; // Digital display position from bottom in pixels (default 40)
+  labelPosition?: number; // Label position from bottom in pixels (default 80)
 }
 
 export interface GaugeTachometerProps {
@@ -56,12 +63,20 @@ export interface GaugeTachometerProps {
   minRpm?: number;
   maxRpm?: number;
   redlineRpm?: number;
+  label?: string; // Gauge label (default 'RPM')
   size?: GaugeSize;
   theme?: GaugeThemeMode;
   colors?: GaugeColors;
   fonts?: GaugeFonts;
   showDigitalRpm?: boolean;
   padding?: number; // Padding as percentage of radius (default 15%)
+  needleLength?: number; // Needle length as pixels from center (default calculated)
+  tickLengthMajor?: number; // Major tick length in pixels (default 15)
+  tickLengthMinor?: number; // Minor tick length in pixels (default 8)
+  centerDotRadius?: number; // Center dot radius in pixels (default 8)
+  digitalDisplayPosition?: number; // Digital display position from bottom in pixels (default 40)
+  labelPosition?: number; // Label position from bottom in pixels (default 80)
+  multiplierLabelPosition?: number; // RPM multiplier label position from top in pixels (default 120)
 }
 
 export interface GaugeBatteryProps {
@@ -76,6 +91,12 @@ export interface GaugeBatteryProps {
   fonts?: GaugeFonts;
   showDigitalVoltage?: boolean;
   padding?: number; // Padding as percentage of radius (default 15%)
+  needleLength?: number; // Needle length as pixels from center (default calculated)
+  tickLengthMajor?: number; // Major tick length in pixels (default 15)
+  tickLengthMinor?: number; // Minor tick length in pixels (default 8)
+  centerDotRadius?: number; // Center dot radius in pixels (default 8)
+  digitalDisplayPosition?: number; // Digital display position from bottom in pixels (default 35)
+  labelPosition?: number; // Label position from bottom in pixels (default 75)
 }
 
 export type FuelUnits = 'percentage' | 'litres' | 'gallons';
@@ -92,6 +113,12 @@ export interface GaugeFuelProps {
   fonts?: GaugeFonts;
   showDigitalLevel?: boolean;
   padding?: number; // Padding as percentage of radius (default 15%)
+  needleLength?: number; // Needle length as pixels from center (default calculated)
+  tickLengthMajor?: number; // Major tick length in pixels (default 15)
+  tickLengthMinor?: number; // Minor tick length in pixels (default 8)
+  centerDotRadius?: number; // Center dot radius in pixels (default 8)
+  digitalDisplayPosition?: number; // Digital display position from bottom in pixels (default 35)
+  labelPosition?: number; // Label position from bottom in pixels (default 75)
 }
 
 export type TemperatureUnits = 'celsius' | 'fahrenheit';
@@ -110,6 +137,12 @@ export interface GaugeTemperatureProps {
   fonts?: GaugeFonts;
   showDigitalTemperature?: boolean;
   padding?: number; // Padding as percentage of radius (default 15%)
+  needleLength?: number; // Needle length as pixels from center (default calculated)
+  tickLengthMajor?: number; // Major tick length in pixels (default 15)
+  tickLengthMinor?: number; // Minor tick length in pixels (default 8)
+  centerDotRadius?: number; // Center dot radius in pixels (default 8)
+  digitalDisplayPosition?: number; // Digital display position from bottom in pixels (default 35)
+  labelPosition?: number; // Label position from bottom in pixels (default 75)
 }
 
 export type PressureUnits = 'psi' | 'bar' | 'kpa';
@@ -128,6 +161,12 @@ export interface GaugeOilPressureProps {
   fonts?: GaugeFonts;
   showDigitalPressure?: boolean;
   padding?: number; // Padding as percentage of radius (default 15%)
+  needleLength?: number; // Needle length as pixels from center (default calculated)
+  tickLengthMajor?: number; // Major tick length in pixels (default 15)
+  tickLengthMinor?: number; // Minor tick length in pixels (default 8)
+  centerDotRadius?: number; // Center dot radius in pixels (default 8)
+  digitalDisplayPosition?: number; // Digital display position from bottom in pixels (default 35)
+  labelPosition?: number; // Label position from bottom in pixels (default 75)
 }
 
 export type GaugeGearOrientation = 'portrait' | 'landscape';
@@ -142,6 +181,10 @@ export interface GaugeGearProps {
   colors?: GaugeColors;
   fonts?: GaugeFonts;
   padding?: number; // Padding as percentage of width/height (default 10%)
+  gearSize?: number; // Size of individual gear circles in pixels (default 45)
+  connectingLineThickness?: number; // Thickness of connecting lines in pixels (default 8)
+  gearMargin?: number; // Margin between gears in pixels (default 1)
+  borderRadius?: number; // Container border radius in pixels (default 15)
 }
 
 

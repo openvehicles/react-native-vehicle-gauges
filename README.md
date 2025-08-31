@@ -87,48 +87,126 @@ A customizable battery voltage gauge with analog display and optional digital re
 - Optional digital speed display
 - Responsive sizing
 
-#### Props
+## API Reference
+
+### Common Props (All Gauges)
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `size` | `GaugeSize` | `{ width: '100%', height: '100%' }` | Gauge dimensions |
+| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Theme mode with auto-detection |
+| `colors` | `GaugeColors` | See below | Color customization |
+| `fonts` | `GaugeFonts` | See below | Font customization |
+| `padding` | `number` | `15` | Border padding as percentage |
+| `label` | `string` | *varies* | Gauge label text (defaults vary by gauge type) |
+
+### Common Props (Circular Gauges)
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `needleLength` | `number` | *calculated* | Needle length in pixels from center |
+| `tickLengthMajor` | `number` | `15` | Major tick length in pixels |
+| `tickLengthMinor` | `number` | `8` | Minor tick length in pixels |
+| `centerDotRadius` | `number` | `8` | Center dot radius in pixels |
+| `digitalDisplayPosition` | `number` | *varies* | Digital display position from bottom |
+| `labelPosition` | `number` | *varies* | Label position from bottom |
+
+### GaugeSpeedometer Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `speed` | `number` | `0` | Current speed value |
-| `minSpeed` | `number` | `0` | Minimum speed on the gauge |
-| `maxSpeed` | `number` | `200` | Maximum speed on the gauge |
-| `redlineSpeed` | `number` | `undefined` | Speed at which redline zone begins |
+| `minSpeed` | `number` | `0` | Minimum speed on gauge |
+| `maxSpeed` | `number` | `200` | Maximum speed on gauge |
+| `redlineSpeed` | `number` | *none* | Speed at which redline zone begins |
 | `units` | `'mph' \| 'kph'` | `'mph'` | Speed units |
-| `size` | `{ width?: number \| string, height?: number \| string }` | `{ width: '100%', height: '100%' }` | Gauge dimensions |
-| `colors` | `GaugeColors` | See below | Color customization |
-| `fonts` | `GaugeFonts` | See below | Font customization |
+| `label` | `string` | `'SPEED'` | Gauge label text |
 | `showDigitalSpeed` | `boolean` | `true` | Show digital speed display |
-| `padding` | `number` | `15` | Padding around gauge as percentage of radius |
+| `digitalDisplayPosition` | `number` | `40` | Digital display position from bottom |
+| `labelPosition` | `number` | `80` | Label position from bottom |
 
-#### Tachometer Props
+### GaugeTachometer Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `rpm` | `number` | `0` | Current RPM value |
-| `minRpm` | `number` | `0` | Minimum RPM on the gauge |
-| `maxRpm` | `number` | `8000` | Maximum RPM on the gauge |
-| `redlineRpm` | `number` | `undefined` | RPM at which redline zone begins |
-| `size` | `{ width?: number \| string, height?: number \| string }` | `{ width: '100%', height: '100%' }` | Gauge dimensions |
-| `colors` | `GaugeColors` | See below | Color customization |
-| `fonts` | `GaugeFonts` | See below | Font customization |
+| `minRpm` | `number` | `0` | Minimum RPM on gauge |
+| `maxRpm` | `number` | `8000` | Maximum RPM on gauge |
+| `redlineRpm` | `number` | *none* | RPM at which redline zone begins |
+| `label` | `string` | `'RPM'` | Gauge label text |
 | `showDigitalRpm` | `boolean` | `true` | Show digital RPM display |
-| `padding` | `number` | `15` | Padding around gauge as percentage of radius |
+| `digitalDisplayPosition` | `number` | `40` | Digital display position from bottom |
+| `labelPosition` | `number` | `80` | Label position from bottom |
+| `multiplierLabelPosition` | `number` | `120` | RPM multiplier label position from top |
 
-#### Battery Props
+### GaugeBattery Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `voltage` | `number` | `12.0` | Current voltage value |
-| `minVoltage` | `number` | `10.0` | Minimum voltage on the gauge |
-| `maxVoltage` | `number` | `16.0` | Maximum voltage on the gauge |
-| `lowVoltage` | `number` | `undefined` | Voltage at which warning zone begins |
-| `size` | `{ width?: number \| string, height?: number \| string }` | `{ width: '100%', height: '100%' }` | Gauge dimensions |
-| `colors` | `GaugeColors` | See below | Color customization |
-| `fonts` | `GaugeFonts` | See below | Font customization |
+| `minVoltage` | `number` | `10.0` | Minimum voltage on gauge |
+| `maxVoltage` | `number` | `16.0` | Maximum voltage on gauge |
+| `lowVoltage` | `number` | *none* | Voltage at which warning zone begins |
+| `label` | `string` | `'BATTERY'` | Gauge label text |
 | `showDigitalVoltage` | `boolean` | `true` | Show digital voltage display |
-| `padding` | `number` | `15` | Padding around gauge as percentage of radius |
+| `digitalDisplayPosition` | `number` | `35` | Digital display position from bottom |
+| `labelPosition` | `number` | `75` | Label position from bottom |
+
+### GaugeFuel Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `fuelLevel` | `number` | `50.0` | Current fuel level (0-100%) |
+| `tankCapacity` | `number` | *none* | Tank capacity for volume calculations |
+| `lowFuelThreshold` | `number` | `25.0` | Low fuel warning threshold |
+| `units` | `'percentage' \| 'litres' \| 'gallons'` | `'percentage'` | Display units |
+| `label` | `string` | `'FUEL'` | Gauge label text |
+| `showDigitalLevel` | `boolean` | `true` | Show digital fuel level display |
+| `digitalDisplayPosition` | `number` | `35` | Digital display position from bottom |
+| `labelPosition` | `number` | `75` | Label position from bottom |
+
+### GaugeTemperature Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `temperature` | `number` | `20` | Current temperature value |
+| `minTemperature` | `number` | `-40` | Minimum temperature on gauge |
+| `maxTemperature` | `number` | `120` | Maximum temperature on gauge |
+| `lowTemperature` | `number` | `0` | Low temperature threshold (blue zone) |
+| `highTemperature` | `number` | `100` | High temperature threshold (red zone) |
+| `units` | `'celsius' \| 'fahrenheit'` | `'celsius'` | Temperature units |
+| `label` | `string` | `'TEMP'` | Gauge label text |
+| `showDigitalTemperature` | `boolean` | `true` | Show digital temperature display |
+| `digitalDisplayPosition` | `number` | `35` | Digital display position from bottom |
+| `labelPosition` | `number` | `75` | Label position from bottom |
+
+### GaugeOilPressure Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `pressure` | `number` | `30` | Current pressure value |
+| `minPressure` | `number` | `0` | Minimum pressure on gauge |
+| `maxPressure` | `number` | `100` | Maximum pressure on gauge |
+| `lowPressure` | `number` | `15` | Low pressure threshold (red zone) |
+| `highPressure` | `number` | `80` | High pressure threshold (red zone) |
+| `units` | `'psi' \| 'bar' \| 'kpa'` | `'psi'` | Pressure units |
+| `label` | `string` | `'OIL PRESSURE'` | Gauge label text |
+| `showDigitalPressure` | `boolean` | `true` | Show digital pressure display |
+| `digitalDisplayPosition` | `number` | `35` | Digital display position from bottom |
+| `labelPosition` | `number` | `75` | Label position from bottom |
+
+### GaugeGear Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `currentGear` | `string` | `'P'` | Currently selected gear |
+| `gears` | `string[]` | `['P', 'R', 'N', 'D']` | Available gears array |
+| `orientation` | `'portrait' \| 'landscape'` | `'portrait'` | Layout orientation |
+| `label` | `string` | `'GEAR'` | Gauge label text |
+| `gearSize` | `number` | `45` | Individual gear circle size in pixels |
+| `connectingLineThickness` | `number` | `8` | Line thickness between gears |
+| `gearMargin` | `number` | `1` | Margin between gears |
+| `borderRadius` | `number` | `15` | Container border radius |
 
 #### Color Options
 
@@ -169,129 +247,197 @@ interface GaugeFonts {
 
 ## Usage
 
+### Basic Usage
+
 ```typescript
 import React from 'react';
 import { View } from 'react-native';
-import { GaugeSpeedometer, GaugeTachometer, GaugeBattery, GaugeFuel, GaugeTemperature, GaugeOilPressure, GaugeGear } from 'react-native-vehicle-gauges';
+import { 
+  GaugeSpeedometer, 
+  GaugeTachometer, 
+  GaugeBattery,
+  GaugeFuel,
+  GaugeTemperature,
+  GaugeOilPressure,
+  GaugeGear 
+} from 'react-native-vehicle-gauges';
 
 export default function App() {
   const [speed, setSpeed] = React.useState(65);
   const [rpm, setRpm] = React.useState(3500);
   const [voltage, setVoltage] = React.useState(12.6);
-  const [fuelLevel, setFuelLevel] = React.useState(75);
-  const [temperature, setTemperature] = React.useState(85);
-  const [oilPressure, setOilPressure] = React.useState(35);
-  const [currentGear, setCurrentGear] = React.useState('D');
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <GaugeSpeedometer
         speed={speed}
-        minSpeed={0}
         maxSpeed={180}
         redlineSpeed={140}
         units="mph"
         size={{ width: 300, height: 300 }}
-        theme="auto" // Automatic theme detection
-        showDigitalSpeed={true}
-        padding={10} // 10% padding for tighter appearance
-        colors={{
-          needle: '#FF4444',
-          redline: '#FF0000',
-          digitalSpeed: '#00FF00'
-        }}
       />
       
       <GaugeTachometer
         rpm={rpm}
-        minRpm={0}
         maxRpm={8000}
         redlineRpm={6500}
         size={{ width: 300, height: 300 }}
-        showDigitalRpm={true}
-        colors={{
-          needle: '#FF6B35',
-          redline: '#FF0000',
-          digitalSpeed: '#FF6B35'
-        }}
       />
       
       <GaugeBattery
         voltage={voltage}
-        minVoltage={10.0}
-        maxVoltage={16.0}
         lowVoltage={12.0}
-        label="BATTERY" // Customizable label (default: 'BATTERY')
         size={{ width: 300, height: 150 }}
-        showDigitalVoltage={true}
-        colors={{
-          needle: '#4CAF50',
-          redline: '#FF5722',
-          digitalSpeed: '#4CAF50'
-        }}
       />
-      
-      <GaugeFuel
-        fuelLevel={fuelLevel}
-        tankCapacity={60} // 60 litres
-        lowFuelThreshold={20}
-        units="litres"
-        label="FUEL" // Customizable label (default: 'FUEL')
-        size={{ width: 300, height: 150 }}
-        showDigitalLevel={true}
+    </View>
+  );
+}
+```
+
+### Advanced Customization
+
+```typescript
+import React from 'react';
+import { View } from 'react-native';
+import { GaugeSpeedometer } from 'react-native-vehicle-gauges';
+
+export default function CustomSpeedometer() {
+  const [speed, setSpeed] = React.useState(85);
+
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <GaugeSpeedometer
+        speed={speed}
+        minSpeed={0}
+        maxSpeed={200}
+        redlineSpeed={160}
+        units="kph"
+        size={{ width: 350, height: 350 }}
+        theme="dark"
+        
+        // Visual customization
+        needleLength={120}         // Custom needle length
+        tickLengthMajor={20}       // Longer major ticks
+        tickLengthMinor={10}       // Longer minor ticks
+        centerDotRadius={12}       // Larger center dot
+        digitalDisplayPosition={45} // Move digital display
+        padding={10}               // Tighter padding
+        
+        // Colors
         colors={{
-          needle: '#2196F3',
-          redline: '#FF5722',
-          digitalSpeed: '#2196F3'
+          background: '#000000',
+          needle: '#FF6B35',
+          tickMajor: '#FFFFFF',
+          tickMinor: '#888888',
+          numbers: '#FFFFFF',
+          redline: '#FF1744',
+          digitalSpeed: '#00E676',
+          arc: '#424242'
         }}
-      />
-      
-      <GaugeTemperature
-        temperature={temperature}
-        minTemperature={60}
-        maxTemperature={120}
-        lowTemperature={75}
-        highTemperature={105}
-        units="celsius"
-        label="TEMP" // Customizable label (default: 'TEMP')
-        size={{ width: 300, height: 150 }}
-        showDigitalTemperature={true}
-        colors={{
-          needle: '#FF9800',
-          redline: '#F44336',
-          digitalSpeed: '#FF9800'
-        }}
-      />
-      
-      <GaugeOilPressure
-        pressure={oilPressure}
-        minPressure={0}
-        maxPressure={80}
-        lowPressure={15}
-        highPressure={70}
-        units="psi"
-        label="OIL PRESSURE" // Customizable label (default: 'OIL PRESSURE')
-        size={{ width: 300, height: 150 }}
-        showDigitalPressure={true}
-        colors={{
-          needle: '#4CAF50',
-          redline: '#FF5722',
-          digitalSpeed: '#4CAF50'
-        }}
-      />
-      
-      <GaugeGear
-        currentGear={currentGear}
-        gears={['P', 'R', 'N', 'D']}
-        label="GEAR" // Customizable label (default: 'GEAR')
-        size={{ width: 120, height: 300 }}
-        colors={{
-          digitalSpeed: '#4CAF50'
+        
+        // Fonts
+        fonts={{
+          numbers: {
+            fontSize: 18,
+            fontFamily: 'System',
+            fontWeight: 'bold'
+          },
+          digitalSpeed: {
+            fontSize: 28,
+            fontFamily: 'System',
+            fontWeight: 'bold'
+          }
         }}
       />
     </View>
   );
 }
+```
+
+### Multi-Gauge Dashboard
+
+```typescript
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { 
+  GaugeSpeedometer,
+  GaugeTachometer,
+  GaugeFuel,
+  GaugeTemperature,
+  GaugeGear 
+} from 'react-native-vehicle-gauges';
+
+export default function Dashboard() {
+  return (
+    <View style={styles.dashboard}>
+      {/* Main gauges */}
+      <View style={styles.mainGauges}>
+        <GaugeSpeedometer
+          speed={75}
+          maxSpeed={180}
+          size={{ width: 200, height: 200 }}
+          padding={10}
+        />
+        <GaugeTachometer
+          rpm={3500}
+          maxRpm={8000}
+          redlineRpm={6500}
+          size={{ width: 200, height: 200 }}
+          padding={10}
+        />
+      </View>
+      
+      {/* Secondary gauges */}
+      <View style={styles.secondaryGauges}>
+        <GaugeFuel
+          fuelLevel={65}
+          lowFuelThreshold={20}
+          units="percentage"
+          size={{ width: 150, height: 100 }}
+          digitalDisplayPosition={25}
+          labelPosition={50}
+        />
+        <GaugeTemperature
+          temperature={85}
+          highTemperature={100}
+          units="celsius"
+          size={{ width: 150, height: 100 }}
+          digitalDisplayPosition={25}
+          labelPosition={50}
+        />
+      </View>
+      
+      {/* Gear selector */}
+      <GaugeGear
+        currentGear="D"
+        gears={['P', 'R', 'N', 'D', 'S']}
+        orientation="landscape"
+        size={{ width: 250, height: 80 }}
+        gearSize={35}
+        connectingLineThickness={6}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  dashboard: {
+    flex: 1,
+    padding: 20,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  mainGauges: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+  },
+  secondaryGauges: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+  },
+});
 ```
 
 ## Theming
@@ -426,13 +572,22 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Roadmap
 
+- [x] ~~Speedometer gauge~~ ✅ **Completed**
 - [x] ~~Tachometer gauge~~ ✅ **Completed**
 - [x] ~~Battery voltage gauge~~ ✅ **Completed**
-- [x] ~~Theme system~~ ✅ **Completed**
 - [x] ~~Fuel gauge~~ ✅ **Completed**
 - [x] ~~Temperature gauge~~ ✅ **Completed**
 - [x] ~~Oil pressure gauge~~ ✅ **Completed**
 - [x] ~~Gear selector~~ ✅ **Completed**
+- [x] ~~Theme system~~ ✅ **Completed**
+- [x] ~~Advanced customization~~ ✅ **Completed**
+- [x] ~~Production-ready library~~ ✅ **Completed**
+
+### Future Enhancements
+- [ ] Multi-gauge cluster layouts
+- [ ] Animation presets and transitions
+- [ ] Additional vehicle-specific gauges
+- [ ] Performance monitoring and analytics
 
 ## Support
 

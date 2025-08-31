@@ -33,6 +33,23 @@ const DEFAULT_FONTS: Required<GaugeFonts> = {
   },
 };
 
+/**
+ * GaugeFuel - A half-circle fuel level gauge with traditional automotive markings
+ * 
+ * Features:
+ * - Half-circle design matching GaugeBattery layout for consistency
+ * - Traditional E-¼-½-¾-F markings following automotive conventions
+ * - Multiple display units: percentage, litres, gallons with tank capacity calculation
+ * - Low fuel threshold warnings with color changes
+ * - Smart digital display that adapts to selected units
+ * 
+ * Design Notes:
+ * - Uses fixed major tick positions: 0%, 25%, 50%, 75%, 100%
+ * - Minor ticks at 12.5% intervals (8 positions total)
+ * - Text labels use fractions (¼, ½, ¾) instead of percentages for authenticity
+ * - Digital display shows percentage, volume (L/gal), or calculated amount
+ * - Low fuel warning applies to both digital display and future analog zones
+ */
 export const GaugeFuel: React.FC<GaugeFuelProps> = ({
   fuelLevel = 50.0,
   tankCapacity,
@@ -45,6 +62,12 @@ export const GaugeFuel: React.FC<GaugeFuelProps> = ({
   fonts = {},
   showDigitalLevel = true,
   padding = 15, // Default 15% padding
+  needleLength,
+  tickLengthMajor = 15,
+  tickLengthMinor = 8,
+  centerDotRadius = 8,
+  digitalDisplayPosition = 35,
+  labelPosition = 75,
 }) => {
   const mergedColors = resolveThemeColors(colors, theme);
   const mergedFonts = {
@@ -90,7 +113,7 @@ export const GaugeFuel: React.FC<GaugeFuelProps> = ({
       const angle = arcStartAngle + (level / 100) * totalAngle;
       const angleRad = toRadians(angle);
       
-      const innerRadius = radius - 15;
+      const innerRadius = radius - tickLengthMajor;
       const outerRadius = radius;
       
       const x1 = centerX + innerRadius * Math.cos(angleRad);
@@ -145,7 +168,7 @@ export const GaugeFuel: React.FC<GaugeFuelProps> = ({
       const angle = arcStartAngle + (level / 100) * totalAngle;
       const angleRad = toRadians(angle);
       
-      const innerRadius = radius - 8;
+      const innerRadius = radius - tickLengthMinor;
       const outerRadius = radius;
       
       const x1 = centerX + innerRadius * Math.cos(angleRad);
@@ -188,9 +211,9 @@ export const GaugeFuel: React.FC<GaugeFuelProps> = ({
   // Generate needle
   const generateNeedle = () => {
     const needleAngleRad = toRadians(needleAngle);
-    const needleLength = radius - 20; // Proper needle length with some clearance
-    const needleTipX = centerX + needleLength * Math.cos(needleAngleRad);
-    const needleTipY = centerY + needleLength * Math.sin(needleAngleRad);
+    const actualNeedleLength = needleLength ?? (radius - 20); // Proper needle length with some clearance
+    const needleTipX = centerX + actualNeedleLength * Math.cos(needleAngleRad);
+    const needleTipY = centerY + actualNeedleLength * Math.sin(needleAngleRad);
 
     // Create needle base points
     const baseWidth = 3;
@@ -259,7 +282,7 @@ export const GaugeFuel: React.FC<GaugeFuelProps> = ({
           <Circle
             cx={centerX}
             cy={centerY}
-            r="8"
+            r={centerDotRadius}
             fill={mergedColors.needle}
           />
           
@@ -276,7 +299,7 @@ export const GaugeFuel: React.FC<GaugeFuelProps> = ({
         
         {/* Digital fuel level display */}
         {showDigitalLevel && (
-          <View style={styles.digitalFuelContainer}>
+          <View style={[styles.digitalFuelContainer, { bottom: digitalDisplayPosition }]}>
             <Text
               style={[
                 styles.digitalFuel,
@@ -294,7 +317,7 @@ export const GaugeFuel: React.FC<GaugeFuelProps> = ({
         )}
 
         {/* Fuel indicator */}
-        <View style={styles.fuelContainer}>
+        <View style={[styles.fuelContainer, { bottom: labelPosition }]}>
           <Text
             style={[
               styles.fuelText,
@@ -331,7 +354,6 @@ const styles = StyleSheet.create({
   },
   digitalFuelContainer: {
     position: 'absolute',
-    bottom: 35,
     alignItems: 'center',
   },
   digitalFuel: {
@@ -339,7 +361,6 @@ const styles = StyleSheet.create({
   },
   fuelContainer: {
     position: 'absolute',
-    bottom: 75, // Position above digital display
     alignItems: 'center',
   },
   fuelText: {

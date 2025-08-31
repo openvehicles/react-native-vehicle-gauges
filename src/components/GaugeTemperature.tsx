@@ -33,6 +33,25 @@ const DEFAULT_FONTS: Required<GaugeFonts> = {
   },
 };
 
+/**
+ * GaugeTemperature - A half-circle temperature gauge with color-coded safety zones
+ * 
+ * Features:
+ * - Half-circle design for space-efficient dashboard integration
+ * - Color-coded safety zones: blue (cold), normal (middle), red (hot)
+ * - Celsius/Fahrenheit support with automatic unit conversion
+ * - Configurable temperature thresholds for safety warnings
+ * - Smart tick intervals adapted for temperature ranges
+ * - Digital temperature display with unit symbol (°C/°F)
+ * 
+ * Design Notes:
+ * - Uses blue color (#0066ff) for low temperatures, red for high temperatures
+ * - Tick intervals: 10° (≤50°), 20° (≤100°), 40° (≤200°), 50° (>200°)
+ * - Temperature conversion handled internally, users provide Celsius values
+ * - Numbers display as integers for cleaner appearance
+ * - Color coding applies to both tick marks and number labels
+ * - Supports wide range: -40°C to 120°C default (automotive applications)
+ */
 export const GaugeTemperature: React.FC<GaugeTemperatureProps> = ({
   temperature = 20,
   minTemperature = -40,
@@ -47,6 +66,12 @@ export const GaugeTemperature: React.FC<GaugeTemperatureProps> = ({
   fonts = {},
   showDigitalTemperature = true,
   padding = 15, // Default 15% padding
+  needleLength,
+  tickLengthMajor = 15,
+  tickLengthMinor = 8,
+  centerDotRadius = 8,
+  digitalDisplayPosition = 35,
+  labelPosition = 75,
 }) => {
   const mergedColors = resolveThemeColors(colors, theme);
   const mergedFonts = {
@@ -122,7 +147,7 @@ export const GaugeTemperature: React.FC<GaugeTemperatureProps> = ({
       const angle = arcStartAngle + ((i - displayMinTemp) / tempRange) * totalAngle;
       const angleRad = toRadians(angle);
       
-      const innerRadius = radius - (isMajor ? 15 : 8);
+      const innerRadius = radius - (isMajor ? tickLengthMajor : tickLengthMinor);
       const outerRadius = radius;
       
       const x1 = centerX + innerRadius * Math.cos(angleRad);
@@ -210,9 +235,9 @@ export const GaugeTemperature: React.FC<GaugeTemperatureProps> = ({
   // Generate needle
   const generateNeedle = () => {
     const needleAngleRad = toRadians(needleAngle);
-    const needleLength = radius - 20; // Proper needle length with some clearance
-    const needleTipX = centerX + needleLength * Math.cos(needleAngleRad);
-    const needleTipY = centerY + needleLength * Math.sin(needleAngleRad);
+    const actualNeedleLength = needleLength ?? (radius - 20); // Proper needle length with some clearance
+    const needleTipX = centerX + actualNeedleLength * Math.cos(needleAngleRad);
+    const needleTipY = centerY + actualNeedleLength * Math.sin(needleAngleRad);
 
     // Create needle base points
     const baseWidth = 3;
@@ -264,7 +289,7 @@ export const GaugeTemperature: React.FC<GaugeTemperatureProps> = ({
           <Circle
             cx={centerX}
             cy={centerY}
-            r="8"
+            r={centerDotRadius}
             fill={mergedColors.needle}
           />
           
@@ -281,7 +306,7 @@ export const GaugeTemperature: React.FC<GaugeTemperatureProps> = ({
         
         {/* Digital temperature display */}
         {showDigitalTemperature && (
-          <View style={styles.digitalTemperatureContainer}>
+          <View style={[styles.digitalTemperatureContainer, { bottom: digitalDisplayPosition }]}>
             <Text
               style={[
                 styles.digitalTemperature,
@@ -312,7 +337,7 @@ export const GaugeTemperature: React.FC<GaugeTemperatureProps> = ({
         )}
 
         {/* Temperature indicator */}
-        <View style={styles.temperatureContainer}>
+        <View style={[styles.temperatureContainer, { bottom: labelPosition }]}>
           <Text
             style={[
               styles.temperatureText,
@@ -349,7 +374,6 @@ const styles = StyleSheet.create({
   },
   digitalTemperatureContainer: {
     position: 'absolute',
-    bottom: 35,
     alignItems: 'center',
   },
   digitalTemperature: {
@@ -361,7 +385,6 @@ const styles = StyleSheet.create({
   },
   temperatureContainer: {
     position: 'absolute',
-    bottom: 75, // Position above digital display
     alignItems: 'center',
   },
   temperatureText: {

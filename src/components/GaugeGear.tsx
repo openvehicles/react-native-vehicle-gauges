@@ -32,6 +32,32 @@ const DEFAULT_FONTS: Required<GaugeFonts> = {
   },
 };
 
+/**
+ * GaugeGear - A rectangular gear selector with dynamic scaling and dual orientation support
+ * 
+ * Features:
+ * - Portrait (vertical) or landscape (horizontal) orientation modes
+ * - Dynamic sizing that automatically adapts to gear count (3-8+ gears)
+ * - Customizable gear sets: PRND (automatic), 1-6 (manual), CVT, etc.
+ * - Visual feedback: active gear highlighting with color and size changes
+ * - Connecting lines between gears for visual continuity
+ * - Responsive typography that scales with gear count
+ * 
+ * Design Notes:
+ * - Base sizing optimized for 4 gears (PRND), scales down for more gears
+ * - Size scale calculation: currentGearCount > 4 ? 4/currentGearCount : 1
+ * - Active gear: larger size, filled background, different text color
+ * - Inactive gears: smaller size, transparent background, border only
+ * - Layout: flexDirection changes based on orientation (row/column)
+ * - Connecting lines positioned between gears, skip first/last positions
+ * - Typography scales: larger font for active gear, smaller for inactive
+ * 
+ * Unique Aspects:
+ * - Only non-circular gauge in the library
+ * - Only gauge with dramatic visual state changes (active vs inactive)
+ * - Only gauge with completely dynamic element count
+ * - Uses View/Text instead of SVG for better text rendering flexibility
+ */
 export const GaugeGear: React.FC<GaugeGearProps> = ({
   currentGear = 'P',
   gears = ['P', 'R', 'N', 'D'],
@@ -42,6 +68,10 @@ export const GaugeGear: React.FC<GaugeGearProps> = ({
   colors = {},
   fonts = {},
   padding = 10, // Default 10% padding
+  gearSize = 45,
+  connectingLineThickness = 8,
+  gearMargin = 1,
+  borderRadius = 15,
 }) => {
   const mergedColors = resolveThemeColors(colors, theme);
   const mergedFonts = {
@@ -55,6 +85,7 @@ export const GaugeGear: React.FC<GaugeGearProps> = ({
     {
       backgroundColor: mergedColors.background,
       aspectRatio: orientation === 'landscape' ? 2.5 : 1 / 2.5, // Flip aspect ratio for landscape
+      borderRadius: borderRadius,
     },
     size.width ? { width: size.width as any } : {},
     size.height ? { height: size.height as any } : {},
@@ -72,10 +103,10 @@ export const GaugeGear: React.FC<GaugeGearProps> = ({
   const sizeScale = currentGearCount > baseGearCount ? baseGearCount / currentGearCount : 1;
   
   // Dynamic sizes
-  const gearSize = Math.round(45 * sizeScale);
-  const gearRadius = gearSize / 2;
-  const connectingLineHeight = Math.max(4, Math.round(8 * sizeScale));
-  const marginVertical = Math.max(1, Math.round(1 * sizeScale));
+  const actualGearSize = Math.round(gearSize * sizeScale);
+  const gearRadius = actualGearSize / 2;
+  const connectingLineHeight = Math.max(4, Math.round(connectingLineThickness * sizeScale));
+  const marginVertical = Math.max(1, Math.round(gearMargin * sizeScale));
   
   // Dynamic font sizes
   const activeFontSize = Math.round((mergedFonts.digitalSpeed.fontSize || 32) * sizeScale);
@@ -148,8 +179,8 @@ export const GaugeGear: React.FC<GaugeGearProps> = ({
                       backgroundColor: isActive ? mergedColors.digitalSpeed : 'transparent',
                       borderColor: isActive ? mergedColors.digitalSpeed : mergedColors.arc,
                       borderWidth: 2,
-                      width: gearSize,
-                      height: gearSize,
+                      width: actualGearSize,
+                      height: actualGearSize,
                       borderRadius: gearRadius,
                       ...(orientation === 'landscape' 
                         ? { marginHorizontal: marginVertical } 
@@ -199,7 +230,6 @@ export const GaugeGear: React.FC<GaugeGearProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 15,
     padding: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

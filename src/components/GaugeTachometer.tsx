@@ -4,6 +4,10 @@ import Svg, { Path, Circle, Line, Text as SvgText, G } from 'react-native-svg';
 import { GaugeTachometerProps, GaugeColors, GaugeFonts } from '../types';
 import { resolveThemeColors } from '../themes';
 
+/**
+ * Default color scheme for the tachometer gauge
+ * Uses automotive-style red needle with distinctive redline zone
+ */
 const DEFAULT_COLORS: Required<GaugeColors> = {
   background: '#1a1a1a',
   needle: '#ff4444',
@@ -33,17 +37,43 @@ const DEFAULT_FONTS: Required<GaugeFonts> = {
   },
 };
 
+/**
+ * GaugeTachometer - A circular RPM gauge with automotive-style design
+ * 
+ * Features:
+ * - Full circle design with 270° sweep, identical to speedometer
+ * - RPM display in thousands (6000 shows as "6") for automotive convention
+ * - Smart tick intervals that adapt to RPM range (500/1000/2000 based on max RPM)
+ * - Redline zone support for engine protection warnings
+ * - "RPM × 1000" multiplier label positioned at top
+ * - Digital RPM display and gauge label positioned at bottom
+ * - All visual elements scale proportionally with gauge size
+ * 
+ * Design Notes:
+ * - Uses same polar coordinate system as speedometer for consistency
+ * - Three separate text displays: numbers (arc), digital (bottom), multiplier (top)
+ * - Tick intervals: 500 RPM (≤4000), 1000 RPM (≤8000), 2000 RPM (>8000)
+ * - Numbers display simplified format (e.g., "6" instead of "6000")
+ */
 export const GaugeTachometer: React.FC<GaugeTachometerProps> = ({
   rpm = 0,
   minRpm = 0,
   maxRpm = 8000,
   redlineRpm,
+  label = 'RPM',
   size = { width: '100%', height: '100%' },
   theme = 'auto',
   colors = {},
   fonts = {},
   showDigitalRpm = true,
   padding = 15, // Default 15% padding
+  needleLength,
+  tickLengthMajor = 15,
+  tickLengthMinor = 8,
+  centerDotRadius = 8,
+  digitalDisplayPosition = 40,
+  labelPosition = 80,
+  multiplierLabelPosition = 120,
 }) => {
   const mergedColors = resolveThemeColors(colors, theme);
   const mergedFonts = {
@@ -70,21 +100,24 @@ export const GaugeTachometer: React.FC<GaugeTachometerProps> = ({
   // Convert degrees to radians
   const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
 
-  // Generate tick marks and numbers
+  /**
+   * Generate tick marks and RPM numbers with automotive-style formatting
+   * Uses adaptive intervals based on RPM range for optimal readability
+   */
   const generateTicks = () => {
     const ticks : any[] = [];
     const numbers : any[] = [];
     
-    // Determine tick intervals based on RPM range
+    // Smart tick intervals - automotive tachometers use specific intervals
     let majorTickInterval: number;
     let minorTicksPerMajor = 5;
     
     if (rpmRange <= 4000) {
-      majorTickInterval = 500;
+      majorTickInterval = 500;   // 500 RPM steps for low-rev engines
     } else if (rpmRange <= 8000) {
-      majorTickInterval = 1000;
+      majorTickInterval = 1000;  // 1000 RPM steps for standard engines
     } else {
-      majorTickInterval = 2000;
+      majorTickInterval = 2000;  // 2000 RPM steps for high-rev engines
     }
     
     const minorTickInterval = majorTickInterval / minorTicksPerMajor;
@@ -94,7 +127,7 @@ export const GaugeTachometer: React.FC<GaugeTachometerProps> = ({
       const angle = startAngle + ((i - minRpm) / rpmRange) * totalAngle;
       const angleRad = toRadians(angle);
       
-      const innerRadius = radius - (isMajor ? 15 : 8);
+      const innerRadius = radius - (isMajor ? tickLengthMajor : tickLengthMinor);
       const outerRadius = radius;
       
       const x1 = centerX + innerRadius * Math.cos(angleRad);
@@ -125,7 +158,8 @@ export const GaugeTachometer: React.FC<GaugeTachometerProps> = ({
 
         const numberColor = redlineRpm && i >= redlineRpm ? mergedColors.redline : mergedColors.numbers;
 
-        // Display RPM in thousands (e.g., 6000 -> 6)
+        // Automotive convention: display RPM in thousands (e.g., 6000 -> "6")
+        // This reduces visual clutter and follows industry standards
         const displayNumber = i >= 1000 ? (i / 1000).toString() : i.toString();
 
         numbers.push(
@@ -167,9 +201,9 @@ export const GaugeTachometer: React.FC<GaugeTachometerProps> = ({
   // Generate needle
   const generateNeedle = () => {
     const needleAngleRad = toRadians(needleAngle);
-    const needleLength = radius - 20;
-    const needleTipX = centerX + needleLength * Math.cos(needleAngleRad);
-    const needleTipY = centerY + needleLength * Math.sin(needleAngleRad);
+    const actualNeedleLength = needleLength ?? (radius - 20);
+    const needleTipX = centerX + actualNeedleLength * Math.cos(needleAngleRad);
+    const needleTipY = centerY + actualNeedleLength * Math.sin(needleAngleRad);
 
     // Create needle base points
     const baseWidth = 3;
@@ -214,7 +248,7 @@ export const GaugeTachometer: React.FC<GaugeTachometerProps> = ({
           <Circle
             cx={centerX}
             cy={centerY}
-            r="8"
+            r={centerDotRadius}
             fill={mergedColors.needle}
           />
           
@@ -229,7 +263,7 @@ export const GaugeTachometer: React.FC<GaugeTachometerProps> = ({
         
         {/* Digital RPM display */}
         {showDigitalRpm && (
-          <View style={styles.digitalRpmContainer}>
+          <View style={[styles.digitalRpmContainer, { bottom: digitalDisplayPosition }]}>
             <Text
               style={[
                 styles.digitalRpm,
@@ -260,7 +294,7 @@ export const GaugeTachometer: React.FC<GaugeTachometerProps> = ({
         )}
 
         {/* RPM x1000 indicator */}
-        <View style={styles.multiplierContainer}>
+        <View style={[styles.multiplierContainer, { top: multiplierLabelPosition }]}>
           <Text
             style={[
               styles.multiplierText,
@@ -273,6 +307,23 @@ export const GaugeTachometer: React.FC<GaugeTachometerProps> = ({
             ]}
           >
             RPM × 1000
+          </Text>
+        </View>
+
+        {/* RPM label */}
+        <View style={[styles.rpmContainer, { bottom: labelPosition }]}>
+          <Text
+            style={[
+              styles.rpmText,
+              {
+                color: mergedColors.numbers,
+                fontSize: Math.max(10, (mergedFonts.units.fontSize || 14) - 2),
+                fontFamily: mergedFonts.units.fontFamily,
+                fontWeight: mergedFonts.units.fontWeight,
+              },
+            ]}
+          >
+            {label}
           </Text>
         </View>
       </View>
@@ -293,7 +344,6 @@ const styles = StyleSheet.create({
   },
   digitalRpmContainer: {
     position: 'absolute',
-    bottom: 40,
     alignItems: 'center',
   },
   digitalRpm: {
@@ -305,10 +355,17 @@ const styles = StyleSheet.create({
   },
   multiplierContainer: {
     position: 'absolute',
-    top: 80,
     alignItems: 'center',
   },
   multiplierText: {
+    textAlign: 'center',
+    opacity: 0.7,
+  },
+  rpmContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+  },
+  rpmText: {
     textAlign: 'center',
     opacity: 0.7,
   },

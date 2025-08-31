@@ -69,6 +69,14 @@
 - **Aspect Ratios**: Proper ratios for each gauge type
 - **Dynamic Scaling**: Elements scale based on gauge count (GaugeGear)
 
+#### ✅ Advanced Customization
+- **Needle Configuration**: Configurable needle length for all circular gauges
+- **Tick Mark Sizing**: Customizable major/minor tick lengths
+- **Center Dot Sizing**: Adjustable center dot radius
+- **Element Positioning**: Configurable digital display and label positions
+- **Gear Gauge Styling**: Complete control over gear sizing, spacing, and borders
+- **Dynamic Calculations**: Smart defaults with full override capability
+
 ### Examples & Documentation
 
 #### ✅ Comprehensive Examples
@@ -165,37 +173,65 @@ react-native-vehicle-gauges/
 - `colors?: GaugeColors` - Complete color customization
 - `fonts?: GaugeFonts` - Font customization
 - `padding?: number` - Border padding percentage
+- `label?: string` - Gauge label text (defaults vary by gauge type)
+
+### Common Props (Circular Gauges)
+- `needleLength?: number` - Needle length in pixels from center
+- `tickLengthMajor?: number` - Major tick length in pixels (default: 15)
+- `tickLengthMinor?: number` - Minor tick length in pixels (default: 8)
+- `centerDotRadius?: number` - Center dot radius in pixels (default: 8)
+- `digitalDisplayPosition?: number` - Digital display position from bottom in pixels
+- `labelPosition?: number` - Label position from bottom in pixels
 
 ### Specific Component Props
 
 #### GaugeSpeedometer
 - `speed: number`, `minSpeed?: number`, `maxSpeed?: number`
 - `redlineSpeed?: number`, `units?: SpeedUnits`
-- `showDigitalSpeed?: boolean`
+- `showDigitalSpeed?: boolean`, `label?: string` (default: 'SPEED')
+- `digitalDisplayPosition?: number` (default: 40)
+- `labelPosition?: number` (default: 80)
 
 #### GaugeTachometer  
 - `rpm: number`, `minRpm?: number`, `maxRpm?: number`
-- `redlineRpm?: number`, `showDigitalRpm?: boolean`
+- `redlineRpm?: number`, `showDigitalRpm?: boolean`, `label?: string` (default: 'RPM')
+- `digitalDisplayPosition?: number` (default: 40)
+- `labelPosition?: number` (default: 80)
+- `multiplierLabelPosition?: number` - RPM multiplier label position from top (default: 120)
 
 #### GaugeBattery
 - `voltage: number`, `minVoltage?: number`, `maxVoltage?: number`
-- `lowVoltage?: number`, `showDigitalVoltage?: boolean`
+- `lowVoltage?: number`, `label?: string`, `showDigitalVoltage?: boolean`
+- `digitalDisplayPosition?: number` (default: 35)
+- `labelPosition?: number` (default: 75)
 
 #### GaugeFuel
-- `fuelLevel: number`, `units?: FuelUnits`
-- `tankCapacity?: number`, `showDigitalFuel?: boolean`
+- `fuelLevel: number`, `units?: FuelUnits`, `tankCapacity?: number`
+- `lowFuelThreshold?: number`, `label?: string`, `showDigitalLevel?: boolean`
+- `digitalDisplayPosition?: number` (default: 35)
+- `labelPosition?: number` (default: 75)
 
 #### GaugeTemperature
-- `temperature: number`, `minTemp?: number`, `maxTemp?: number`
-- `lowTemp?: number`, `highTemp?: number`, `units?: TemperatureUnits`
+- `temperature: number`, `minTemperature?: number`, `maxTemperature?: number`
+- `lowTemperature?: number`, `highTemperature?: number`, `units?: TemperatureUnits`
+- `label?: string`, `showDigitalTemperature?: boolean`
+- `digitalDisplayPosition?: number` (default: 35)
+- `labelPosition?: number` (default: 75)
 
 #### GaugeOilPressure  
 - `pressure: number`, `minPressure?: number`, `maxPressure?: number`
 - `lowPressure?: number`, `highPressure?: number`, `units?: PressureUnits`
+- `label?: string`, `showDigitalPressure?: boolean`
+- `digitalDisplayPosition?: number` (default: 35)
+- `labelPosition?: number` (default: 75)
 
 #### GaugeGear
-- `currentGear: string`, `gears?: string[]`
+- `currentGear: string`, `gears?: string[]`, `label?: string`
 - `orientation?: GaugeGearOrientation` (portrait/landscape)
+- `gearSize?: number` - Individual gear circle size (default: 45)
+- `connectingLineThickness?: number` - Line thickness between gears (default: 8)
+- `gearMargin?: number` - Margin between gears (default: 1)
+- `borderRadius?: number` - Container border radius (default: 15)
 
 ## 🚀 Production Ready Status
 
