@@ -29,8 +29,27 @@ const DEFAULT_FONTS = {
         fontWeight: 'normal',
     },
 };
+/**
+ * GaugeTemperature - A half-circle temperature gauge with color-coded safety zones
+ *
+ * Features:
+ * - Half-circle design for space-efficient dashboard integration
+ * - Color-coded safety zones: blue (cold), normal (middle), red (hot)
+ * - Celsius/Fahrenheit support with automatic unit conversion
+ * - Configurable temperature thresholds for safety warnings
+ * - Smart tick intervals adapted for temperature ranges
+ * - Digital temperature display with unit symbol (°C/°F)
+ *
+ * Design Notes:
+ * - Uses blue color (#0066ff) for low temperatures, red for high temperatures
+ * - Tick intervals: 10° (≤50°), 20° (≤100°), 40° (≤200°), 50° (>200°)
+ * - Temperature conversion handled internally, users provide Celsius values
+ * - Numbers display as integers for cleaner appearance
+ * - Color coding applies to both tick marks and number labels
+ * - Supports wide range: -40°C to 120°C default (automotive applications)
+ */
 export const GaugeTemperature = ({ temperature = 20, minTemperature = -40, maxTemperature = 120, lowTemperature = 0, highTemperature = 100, units = 'celsius', label = 'TEMP', size = { width: '100%', height: '100%' }, theme = 'auto', colors = {}, fonts = {}, showDigitalTemperature = true, padding = 15, // Default 15% padding
- }) => {
+needleLength, tickLengthMajor = 15, tickLengthMinor = 8, centerDotRadius = 8, digitalDisplayPosition = 35, labelPosition = 75, }) => {
     const mergedColors = resolveThemeColors(colors, theme);
     const mergedFonts = {
         numbers: { ...DEFAULT_FONTS.numbers, ...(fonts.numbers || {}) },
@@ -95,7 +114,7 @@ export const GaugeTemperature = ({ temperature = 20, minTemperature = -40, maxTe
             const isMajor = Math.abs((i - displayMinTemp) % majorTickInterval) < 0.01;
             const angle = arcStartAngle + ((i - displayMinTemp) / tempRange) * totalAngle;
             const angleRad = toRadians(angle);
-            const innerRadius = radius - (isMajor ? 15 : 8);
+            const innerRadius = radius - (isMajor ? tickLengthMajor : tickLengthMinor);
             const outerRadius = radius;
             const x1 = centerX + innerRadius * Math.cos(angleRad);
             const y1 = centerY + innerRadius * Math.sin(angleRad);
@@ -150,9 +169,9 @@ export const GaugeTemperature = ({ temperature = 20, minTemperature = -40, maxTe
     // Generate needle
     const generateNeedle = () => {
         const needleAngleRad = toRadians(needleAngle);
-        const needleLength = radius - 20; // Proper needle length with some clearance
-        const needleTipX = centerX + needleLength * Math.cos(needleAngleRad);
-        const needleTipY = centerY + needleLength * Math.sin(needleAngleRad);
+        const actualNeedleLength = needleLength !== null && needleLength !== void 0 ? needleLength : (radius - 20); // Proper needle length with some clearance
+        const needleTipX = centerX + actualNeedleLength * Math.cos(needleAngleRad);
+        const needleTipY = centerY + actualNeedleLength * Math.sin(needleAngleRad);
         // Create needle base points
         const baseWidth = 3;
         const baseAngle1 = needleAngleRad + Math.PI / 2;
@@ -188,7 +207,7 @@ export const GaugeTemperature = ({ temperature = 20, minTemperature = -40, maxTe
           <G>{numbers}</G>
           
           {/* Center dot */}
-          <Circle cx={centerX} cy={centerY} r="8" fill={mergedColors.needle}/>
+          <Circle cx={centerX} cy={centerY} r={centerDotRadius} fill={mergedColors.needle}/>
           
           {/* Needle */}
           <Path d={generateNeedle()} fill={mergedColors.needle} stroke={mergedColors.needle} strokeWidth="1"/>
@@ -197,7 +216,7 @@ export const GaugeTemperature = ({ temperature = 20, minTemperature = -40, maxTe
         </Svg>
         
         {/* Digital temperature display */}
-        {showDigitalTemperature && (<View style={styles.digitalTemperatureContainer}>
+        {showDigitalTemperature && (<View style={[styles.digitalTemperatureContainer, { bottom: digitalDisplayPosition }]}>
             <Text style={[
                 styles.digitalTemperature,
                 {
@@ -223,7 +242,7 @@ export const GaugeTemperature = ({ temperature = 20, minTemperature = -40, maxTe
           </View>)}
 
         {/* Temperature indicator */}
-        <View style={styles.temperatureContainer}>
+        <View style={[styles.temperatureContainer, { bottom: labelPosition }]}>
           <Text style={[
             styles.temperatureText,
             {
@@ -256,7 +275,6 @@ const styles = StyleSheet.create({
     },
     digitalTemperatureContainer: {
         position: 'absolute',
-        bottom: 35,
         alignItems: 'center',
     },
     digitalTemperature: {
@@ -268,7 +286,6 @@ const styles = StyleSheet.create({
     },
     temperatureContainer: {
         position: 'absolute',
-        bottom: 75, // Position above digital display
         alignItems: 'center',
     },
     temperatureText: {

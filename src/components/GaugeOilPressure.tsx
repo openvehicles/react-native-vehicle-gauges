@@ -80,23 +80,12 @@ export const GaugeOilPressure: React.FC<GaugeOilPressureProps> = ({
     units: { ...DEFAULT_FONTS.units, ...(fonts.units || {}) },
   };
 
-  // Convert pressure if needed
-  const convertPressure = (psi: number) => {
-    switch (units) {
-      case 'bar':
-        return psi * 0.0689476; // PSI to Bar
-      case 'kpa':
-        return psi * 6.89476; // PSI to kPa
-      default:
-        return psi; // PSI
-    }
-  };
-
-  const displayMinPressure = convertPressure(minPressure);
-  const displayMaxPressure = convertPressure(maxPressure);
-  const displayPressure = convertPressure(pressure);
-  const displayLowPressure = lowPressure ? convertPressure(lowPressure) : undefined;
-  const displayHighPressure = highPressure ? convertPressure(highPressure) : undefined;
+  // Use pressure values directly without conversion
+  const displayMinPressure = minPressure;
+  const displayMaxPressure = maxPressure;
+  const displayPressure = pressure;
+  const displayLowPressure = lowPressure;
+  const displayHighPressure = highPressure;
 
   // Use full available space for half-circle (150px radius from 300px width)
   const maxRadius = 150; // Use full width radius for maximum gauge size
@@ -194,15 +183,8 @@ export const GaugeOilPressure: React.FC<GaugeOilPressureProps> = ({
           numberColor = '#ff0000'; // Red for high pressure
         }
 
-        // Display pressure with appropriate precision based on units
-        let displayNumber: string;
-        if (units === 'bar') {
-          displayNumber = i.toFixed(1);
-        } else if (units === 'kpa') {
-          displayNumber = Math.round(i).toString();
-        } else {
-          displayNumber = Math.round(i).toString();
-        }
+        // Display pressure as integer
+        const displayNumber = Math.round(i).toString();
 
         numbers.push(
           <SvgText
@@ -276,24 +258,11 @@ export const GaugeOilPressure: React.FC<GaugeOilPressureProps> = ({
   ];
 
   const getUnitSymbol = () => {
-    switch (units) {
-      case 'bar':
-        return 'bar';
-      case 'kpa':
-        return 'kPa';
-      default:
-        return 'PSI';
-    }
+    return units || 'PSI';
   };
 
   const formatPressureDisplay = () => {
-    if (units === 'bar') {
-      return displayPressure.toFixed(1);
-    } else if (units === 'kpa') {
-      return Math.round(displayPressure).toString();
-    } else {
-      return Math.round(displayPressure).toString();
-    }
+    return Math.round(displayPressure).toString();
   };
 
   return (

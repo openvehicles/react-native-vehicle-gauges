@@ -2,6 +2,10 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Svg, { Path, Circle, Line, Text as SvgText, G } from 'react-native-svg';
 import { resolveThemeColors } from '../themes';
+/**
+ * Default color scheme for the battery voltage gauge
+ * Uses orange for redline (low voltage) warnings instead of red
+ */
 const DEFAULT_COLORS = {
     background: '#1a1a1a',
     needle: '#00ff00',
@@ -29,61 +33,82 @@ const DEFAULT_FONTS = {
         fontWeight: 'normal',
     },
 };
+/**
+ * GaugeBattery - A half-circle voltage gauge optimized for automotive battery monitoring
+ *
+ * Features:
+ * - Half-circle design (180° arc) with flat base for space efficiency
+ * - Optimized for 12V automotive batteries (default 10.0-16.0V range)
+ * - Enhanced tick intervals with decimal precision for voltage accuracy
+ * - Low voltage warning zone (typically <12.0V for automotive use)
+ * - More frequent tick labels compared to other gauges for precision reading
+ * - Digital voltage display with one decimal place precision
+ *
+ * Design Notes:
+ * - Uses 180° arc from left (9 o'clock) to right (3 o'clock)
+ * - Tick intervals adapt to voltage range: ≤3V uses 0.5V steps, >10V uses 2V steps
+ * - viewBox height is dynamic: 150 + extraHeight for label space
+ * - Numbers positioned closer to arc (radius - 25) for better readability
+ * - Orange warning color distinguishes from red redline zones in other gauges
+ */
 export const GaugeBattery = ({ voltage = 12.0, minVoltage = 10.0, maxVoltage = 16.0, lowVoltage, label = 'BATTERY', size = { width: '100%', height: '100%' }, theme = 'auto', colors = {}, fonts = {}, showDigitalVoltage = true, padding = 15, // Default 15% padding
- }) => {
+needleLength, tickLengthMajor = 15, tickLengthMinor = 8, centerDotRadius = 8, digitalDisplayPosition = 35, labelPosition = 75, }) => {
     const mergedColors = resolveThemeColors(colors, theme);
     const mergedFonts = {
         numbers: { ...DEFAULT_FONTS.numbers, ...(fonts.numbers || {}) },
         digitalSpeed: { ...DEFAULT_FONTS.digitalSpeed, ...(fonts.digitalSpeed || {}) },
         units: { ...DEFAULT_FONTS.units, ...(fonts.units || {}) },
     };
-    // Use full available space for half-circle (150px radius from 300px width)
-    const maxRadius = 150; // Use full width radius for maximum gauge size
+    // Half-circle geometry - efficient use of space for dashboard layouts
+    const maxRadius = 150; // Maximum radius using full 300px width
     const paddingPixels = (maxRadius * padding) / 100; // Convert percentage to pixels  
-    const radius = maxRadius - paddingPixels; // Calculate actual radius with padding
-    const centerX = 150; // Center horizontally
-    const centerY = 150; // Center at bottom of viewBox
-    // Extra height for label padding (no rectangle, just space)
+    const radius = maxRadius - paddingPixels; // Actual gauge radius with padding
+    const centerX = 150; // Horizontal center of 300px viewBox
+    const centerY = 150; // Positioned at bottom edge for half-circle effect
+    // Dynamic viewBox height - accommodates label space below arc
     const extraHeight = paddingPixels;
-    // Standard half-circle from left to right
-    const arcStartAngle = 180; // Left side (9 o'clock)
-    const arcEndAngle = 0; // Right side (3 o'clock)
-    const totalAngle = 180; // 180° total sweep
+    // Half-circle arc configuration (top half of circle)
+    const arcStartAngle = 180; // Left endpoint (9 o'clock position)
+    const arcEndAngle = 0; // Right endpoint (3 o'clock position)  
+    const totalAngle = 180; // 180° sweep creates perfect half-circle
     // Calculate needle angle based on voltage - use same range as ticks
     const voltageRange = maxVoltage - minVoltage;
     const voltageRatio = Math.max(0, Math.min(1, (voltage - minVoltage) / voltageRange));
     const needleAngle = arcStartAngle + (voltageRatio * totalAngle); // Add because we go 180° → 270° → 0°
     // Convert degrees to radians
     const toRadians = (degrees) => (degrees * Math.PI) / 180;
-    // Generate tick marks and numbers
+    /**
+     * Generate precision tick marks for voltage measurement
+     * Uses fine-grained intervals appropriate for electrical monitoring
+     */
     const generateTicks = () => {
         const ticks = [];
         const numbers = [];
-        // Determine tick intervals based on voltage range for half-circle layout
+        // Voltage-specific tick intervals - precision matters for electrical systems
         let majorTickInterval;
         let minorTicksPerMajor = 4;
         if (voltageRange <= 3) {
-            majorTickInterval = 0.5;
-            minorTicksPerMajor = 5;
+            majorTickInterval = 0.5; // Fine precision for small ranges (e.g., 3.3V systems)
+            minorTicksPerMajor = 5; // 0.1V minor ticks
         }
         else if (voltageRange <= 6) {
-            majorTickInterval = 1;
-            minorTicksPerMajor = 4;
+            majorTickInterval = 1; // 1V steps for medium ranges (e.g., 5V systems)
+            minorTicksPerMajor = 4; // 0.25V minor ticks
         }
         else if (voltageRange <= 10) {
-            majorTickInterval = 2;
-            minorTicksPerMajor = 4;
+            majorTickInterval = 2; // 2V steps for automotive ranges (8-16V)
+            minorTicksPerMajor = 4; // 0.5V minor ticks
         }
         else {
-            majorTickInterval = 2;
-            minorTicksPerMajor = 4;
+            majorTickInterval = 2; // Keep 2V for very wide ranges
+            minorTicksPerMajor = 4; // 0.5V minor ticks
         }
         const minorTickInterval = majorTickInterval / minorTicksPerMajor;
         for (let i = minVoltage; i <= maxVoltage; i += minorTickInterval) {
             const isMajor = Math.abs((i - minVoltage) % majorTickInterval) < 0.01;
             const angle = arcStartAngle + ((i - minVoltage) / voltageRange) * totalAngle;
             const angleRad = toRadians(angle);
-            const innerRadius = radius - (isMajor ? 15 : 8);
+            const innerRadius = radius - (isMajor ? tickLengthMajor : tickLengthMinor);
             const outerRadius = radius;
             const x1 = centerX + innerRadius * Math.cos(angleRad);
             const y1 = centerY + innerRadius * Math.sin(angleRad);
@@ -125,9 +150,9 @@ export const GaugeBattery = ({ voltage = 12.0, minVoltage = 10.0, maxVoltage = 1
     // Generate needle
     const generateNeedle = () => {
         const needleAngleRad = toRadians(needleAngle);
-        const needleLength = radius - 20; // Proper needle length with some clearance
-        const needleTipX = centerX + needleLength * Math.cos(needleAngleRad);
-        const needleTipY = centerY + needleLength * Math.sin(needleAngleRad);
+        const actualNeedleLength = needleLength !== null && needleLength !== void 0 ? needleLength : (radius - 20); // Proper needle length with some clearance
+        const needleTipX = centerX + actualNeedleLength * Math.cos(needleAngleRad);
+        const needleTipY = centerY + actualNeedleLength * Math.sin(needleAngleRad);
         // Create needle base points
         const baseWidth = 3;
         const baseAngle1 = needleAngleRad + Math.PI / 2;
@@ -162,7 +187,7 @@ export const GaugeBattery = ({ voltage = 12.0, minVoltage = 10.0, maxVoltage = 1
           <G>{numbers}</G>
           
           {/* Center dot */}
-          <Circle cx={centerX} cy={centerY} r="8" fill={mergedColors.needle}/>
+          <Circle cx={centerX} cy={centerY} r={centerDotRadius} fill={mergedColors.needle}/>
           
           {/* Needle */}
           <Path d={generateNeedle()} fill={mergedColors.needle} stroke={mergedColors.needle} strokeWidth="1"/>
@@ -171,7 +196,7 @@ export const GaugeBattery = ({ voltage = 12.0, minVoltage = 10.0, maxVoltage = 1
         </Svg>
         
         {/* Digital voltage display */}
-        {showDigitalVoltage && (<View style={styles.digitalVoltageContainer}>
+        {showDigitalVoltage && (<View style={[styles.digitalVoltageContainer, { bottom: digitalDisplayPosition }]}>
             <Text style={[
                 styles.digitalVoltage,
                 {
@@ -197,7 +222,7 @@ export const GaugeBattery = ({ voltage = 12.0, minVoltage = 10.0, maxVoltage = 1
           </View>)}
 
         {/* Battery indicator */}
-        <View style={styles.batteryContainer}>
+        <View style={[styles.batteryContainer, { bottom: labelPosition }]}>
           <Text style={[
             styles.batteryText,
             {
@@ -230,7 +255,6 @@ const styles = StyleSheet.create({
     },
     digitalVoltageContainer: {
         position: 'absolute',
-        bottom: 35,
         alignItems: 'center',
     },
     digitalVoltage: {
@@ -242,7 +266,6 @@ const styles = StyleSheet.create({
     },
     batteryContainer: {
         position: 'absolute',
-        bottom: 75, // Position above digital display
         alignItems: 'center',
     },
     batteryText: {

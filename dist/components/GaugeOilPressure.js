@@ -29,8 +29,27 @@ const DEFAULT_FONTS = {
         fontWeight: 'normal',
     },
 };
+/**
+ * GaugeOilPressure - A half-circle pressure gauge with dual warning zones for engine safety
+ *
+ * Features:
+ * - Half-circle design optimized for automotive engine monitoring
+ * - Dual red warning zones: low pressure (left) and high pressure (right)
+ * - Multi-unit support: PSI, Bar, kPa with automatic conversion
+ * - Smart tick intervals adapted to pressure ranges and units
+ * - Critical safety focus with prominent warning zone coloring
+ * - Precision display formatting based on selected units
+ *
+ * Design Notes:
+ * - Unique dual-zone warning system (most gauges have single redline)
+ * - Unit conversion: PSI base → Bar (*0.0689476) → kPa (*6.89476)
+ * - Red zones for both dangerously low oil pressure and excessive pressure
+ * - Display precision: Bar (1 decimal), kPa/PSI (integer), for readability
+ * - Tick intervals: 5 (≤20), 10 (≤50), 20 (≤100), 50 (>100) based on range
+ * - Color coding extends to both tick marks and number labels
+ */
 export const GaugeOilPressure = ({ pressure = 30, minPressure = 0, maxPressure = 100, lowPressure = 15, highPressure = 80, units = 'psi', label = 'OIL PRESSURE', size = { width: '100%', height: '100%' }, theme = 'auto', colors = {}, fonts = {}, showDigitalPressure = true, padding = 15, // Default 15% padding
- }) => {
+needleLength, tickLengthMajor = 15, tickLengthMinor = 8, centerDotRadius = 8, digitalDisplayPosition = 35, labelPosition = 75, }) => {
     const mergedColors = resolveThemeColors(colors, theme);
     const mergedFonts = {
         numbers: { ...DEFAULT_FONTS.numbers, ...(fonts.numbers || {}) },
@@ -100,7 +119,7 @@ export const GaugeOilPressure = ({ pressure = 30, minPressure = 0, maxPressure =
             const isMajor = Math.abs((i - displayMinPressure) % majorTickInterval) < 0.01;
             const angle = arcStartAngle + ((i - displayMinPressure) / pressureRange) * totalAngle;
             const angleRad = toRadians(angle);
-            const innerRadius = radius - (isMajor ? 15 : 8);
+            const innerRadius = radius - (isMajor ? tickLengthMajor : tickLengthMinor);
             const outerRadius = radius;
             const x1 = centerX + innerRadius * Math.cos(angleRad);
             const y1 = centerY + innerRadius * Math.sin(angleRad);
@@ -164,9 +183,9 @@ export const GaugeOilPressure = ({ pressure = 30, minPressure = 0, maxPressure =
     // Generate needle
     const generateNeedle = () => {
         const needleAngleRad = toRadians(needleAngle);
-        const needleLength = radius - 20; // Proper needle length with some clearance
-        const needleTipX = centerX + needleLength * Math.cos(needleAngleRad);
-        const needleTipY = centerY + needleLength * Math.sin(needleAngleRad);
+        const actualNeedleLength = needleLength !== null && needleLength !== void 0 ? needleLength : (radius - 20); // Proper needle length with some clearance
+        const needleTipX = centerX + actualNeedleLength * Math.cos(needleAngleRad);
+        const needleTipY = centerY + actualNeedleLength * Math.sin(needleAngleRad);
         // Create needle base points
         const baseWidth = 3;
         const baseAngle1 = needleAngleRad + Math.PI / 2;
@@ -222,7 +241,7 @@ export const GaugeOilPressure = ({ pressure = 30, minPressure = 0, maxPressure =
           <G>{numbers}</G>
           
           {/* Center dot */}
-          <Circle cx={centerX} cy={centerY} r="8" fill={mergedColors.needle}/>
+          <Circle cx={centerX} cy={centerY} r={centerDotRadius} fill={mergedColors.needle}/>
           
           {/* Needle */}
           <Path d={generateNeedle()} fill={mergedColors.needle} stroke={mergedColors.needle} strokeWidth="1"/>
@@ -231,7 +250,7 @@ export const GaugeOilPressure = ({ pressure = 30, minPressure = 0, maxPressure =
         </Svg>
         
         {/* Digital pressure display */}
-        {showDigitalPressure && (<View style={styles.digitalPressureContainer}>
+        {showDigitalPressure && (<View style={[styles.digitalPressureContainer, { bottom: digitalDisplayPosition }]}>
             <Text style={[
                 styles.digitalPressure,
                 {
@@ -257,7 +276,7 @@ export const GaugeOilPressure = ({ pressure = 30, minPressure = 0, maxPressure =
           </View>)}
 
         {/* Oil pressure indicator */}
-        <View style={styles.oilPressureContainer}>
+        <View style={[styles.oilPressureContainer, { bottom: labelPosition }]}>
           <Text style={[
             styles.oilPressureText,
             {
@@ -290,7 +309,6 @@ const styles = StyleSheet.create({
     },
     digitalPressureContainer: {
         position: 'absolute',
-        bottom: 35,
         alignItems: 'center',
     },
     digitalPressure: {
@@ -302,7 +320,6 @@ const styles = StyleSheet.create({
     },
     oilPressureContainer: {
         position: 'absolute',
-        bottom: 75, // Position above digital display
         alignItems: 'center',
     },
     oilPressureText: {

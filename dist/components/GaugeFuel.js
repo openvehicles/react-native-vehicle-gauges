@@ -29,8 +29,25 @@ const DEFAULT_FONTS = {
         fontWeight: 'normal',
     },
 };
+/**
+ * GaugeFuel - A half-circle fuel level gauge with traditional automotive markings
+ *
+ * Features:
+ * - Half-circle design matching GaugeBattery layout for consistency
+ * - Traditional E-¼-½-¾-F markings following automotive conventions
+ * - Multiple display units: percentage, litres, gallons with tank capacity calculation
+ * - Low fuel threshold warnings with color changes
+ * - Smart digital display that adapts to selected units
+ *
+ * Design Notes:
+ * - Uses fixed major tick positions: 0%, 25%, 50%, 75%, 100%
+ * - Minor ticks at 12.5% intervals (8 positions total)
+ * - Text labels use fractions (¼, ½, ¾) instead of percentages for authenticity
+ * - Digital display shows percentage, volume (L/gal), or calculated amount
+ * - Low fuel warning applies to both digital display and future analog zones
+ */
 export const GaugeFuel = ({ fuelLevel = 50.0, tankCapacity, lowFuelThreshold = 25.0, units = 'percentage', label = 'FUEL', size = { width: '100%', height: '100%' }, theme = 'auto', colors = {}, fonts = {}, showDigitalLevel = true, padding = 15, // Default 15% padding
- }) => {
+needleLength, tickLengthMajor = 15, tickLengthMinor = 8, centerDotRadius = 8, digitalDisplayPosition = 35, labelPosition = 75, }) => {
     const mergedColors = resolveThemeColors(colors, theme);
     const mergedFonts = {
         numbers: { ...DEFAULT_FONTS.numbers, ...(fonts.numbers || {}) },
@@ -66,7 +83,7 @@ export const GaugeFuel = ({ fuelLevel = 50.0, tankCapacity, lowFuelThreshold = 2
         for (const level of majorTicks) {
             const angle = arcStartAngle + (level / 100) * totalAngle;
             const angleRad = toRadians(angle);
-            const innerRadius = radius - 15;
+            const innerRadius = radius - tickLengthMajor;
             const outerRadius = radius;
             const x1 = centerX + innerRadius * Math.cos(angleRad);
             const y1 = centerY + innerRadius * Math.sin(angleRad);
@@ -97,7 +114,7 @@ export const GaugeFuel = ({ fuelLevel = 50.0, tankCapacity, lowFuelThreshold = 2
         for (const level of minorTicks) {
             const angle = arcStartAngle + (level / 100) * totalAngle;
             const angleRad = toRadians(angle);
-            const innerRadius = radius - 8;
+            const innerRadius = radius - tickLengthMinor;
             const outerRadius = radius;
             const x1 = centerX + innerRadius * Math.cos(angleRad);
             const y1 = centerY + innerRadius * Math.sin(angleRad);
@@ -122,9 +139,9 @@ export const GaugeFuel = ({ fuelLevel = 50.0, tankCapacity, lowFuelThreshold = 2
     // Generate needle
     const generateNeedle = () => {
         const needleAngleRad = toRadians(needleAngle);
-        const needleLength = radius - 20; // Proper needle length with some clearance
-        const needleTipX = centerX + needleLength * Math.cos(needleAngleRad);
-        const needleTipY = centerY + needleLength * Math.sin(needleAngleRad);
+        const actualNeedleLength = needleLength !== null && needleLength !== void 0 ? needleLength : (radius - 20); // Proper needle length with some clearance
+        const needleTipX = centerX + actualNeedleLength * Math.cos(needleAngleRad);
+        const needleTipY = centerY + actualNeedleLength * Math.sin(needleAngleRad);
         // Create needle base points
         const baseWidth = 3;
         const baseX1 = centerX + baseWidth * Math.cos(needleAngleRad + Math.PI / 2);
@@ -183,7 +200,7 @@ export const GaugeFuel = ({ fuelLevel = 50.0, tankCapacity, lowFuelThreshold = 2
           <G>{numbers}</G>
           
           {/* Center dot */}
-          <Circle cx={centerX} cy={centerY} r="8" fill={mergedColors.needle}/>
+          <Circle cx={centerX} cy={centerY} r={centerDotRadius} fill={mergedColors.needle}/>
           
           {/* Needle */}
           <Path d={generateNeedle()} fill={mergedColors.needle} stroke={mergedColors.needle} strokeWidth="1"/>
@@ -192,7 +209,7 @@ export const GaugeFuel = ({ fuelLevel = 50.0, tankCapacity, lowFuelThreshold = 2
         </Svg>
         
         {/* Digital fuel level display */}
-        {showDigitalLevel && (<View style={styles.digitalFuelContainer}>
+        {showDigitalLevel && (<View style={[styles.digitalFuelContainer, { bottom: digitalDisplayPosition }]}>
             <Text style={[
                 styles.digitalFuel,
                 {
@@ -207,7 +224,7 @@ export const GaugeFuel = ({ fuelLevel = 50.0, tankCapacity, lowFuelThreshold = 2
           </View>)}
 
         {/* Fuel indicator */}
-        <View style={styles.fuelContainer}>
+        <View style={[styles.fuelContainer, { bottom: labelPosition }]}>
           <Text style={[
             styles.fuelText,
             {
@@ -240,7 +257,6 @@ const styles = StyleSheet.create({
     },
     digitalFuelContainer: {
         position: 'absolute',
-        bottom: 35,
         alignItems: 'center',
     },
     digitalFuel: {
@@ -248,7 +264,6 @@ const styles = StyleSheet.create({
     },
     fuelContainer: {
         position: 'absolute',
-        bottom: 75, // Position above digital display
         alignItems: 'center',
     },
     fuelText: {

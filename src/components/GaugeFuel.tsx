@@ -236,26 +236,9 @@ export const GaugeFuel: React.FC<GaugeFuelProps> = ({
     size.height ? { height: size.height as any } : {},
   ];
 
-  // Calculate digital display value
+  // Display fuel level as percentage with units string
   const getDigitalValue = () => {
-    if (units === 'percentage') {
-      return `${Math.round(fuelLevel)}%`;
-    } else if (units === 'litres' && tankCapacity) {
-      const litres = (fuelLevel / 100) * tankCapacity;
-      return `${litres.toFixed(1)}L`;
-    } else if (units === 'gallons' && tankCapacity) {
-      const gallons = (fuelLevel / 100) * tankCapacity;
-      return `${gallons.toFixed(1)}gal`;
-    } else {
-      return `${Math.round(fuelLevel)}%`;
-    }
-  };
-
-  const getUnitsLabel = () => {
-    if (units === 'percentage') return '%';
-    if (units === 'litres') return 'L';
-    if (units === 'gallons') return 'gal';
-    return '%';
+    return `${Math.round(fuelLevel)}${units || '%'}`;
   };
 
   return (

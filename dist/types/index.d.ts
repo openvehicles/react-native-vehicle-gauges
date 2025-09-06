@@ -38,24 +38,39 @@ export interface GaugeSpeedometerProps {
     maxSpeed?: number;
     redlineSpeed?: number;
     units?: SpeedUnits;
+    label?: string;
     size?: GaugeSize;
     theme?: GaugeThemeMode;
     colors?: GaugeColors;
     fonts?: GaugeFonts;
     showDigitalSpeed?: boolean;
     padding?: number;
+    needleLength?: number;
+    tickLengthMajor?: number;
+    tickLengthMinor?: number;
+    centerDotRadius?: number;
+    digitalDisplayPosition?: number;
+    labelPosition?: number;
 }
 export interface GaugeTachometerProps {
     rpm: number;
     minRpm?: number;
     maxRpm?: number;
     redlineRpm?: number;
+    label?: string;
     size?: GaugeSize;
     theme?: GaugeThemeMode;
     colors?: GaugeColors;
     fonts?: GaugeFonts;
     showDigitalRpm?: boolean;
     padding?: number;
+    needleLength?: number;
+    tickLengthMajor?: number;
+    tickLengthMinor?: number;
+    centerDotRadius?: number;
+    digitalDisplayPosition?: number;
+    labelPosition?: number;
+    multiplierLabelPosition?: number;
 }
 export interface GaugeBatteryProps {
     voltage: number;
@@ -69,6 +84,12 @@ export interface GaugeBatteryProps {
     fonts?: GaugeFonts;
     showDigitalVoltage?: boolean;
     padding?: number;
+    needleLength?: number;
+    tickLengthMajor?: number;
+    tickLengthMinor?: number;
+    centerDotRadius?: number;
+    digitalDisplayPosition?: number;
+    labelPosition?: number;
 }
 export type FuelUnits = 'percentage' | 'litres' | 'gallons';
 export interface GaugeFuelProps {
@@ -83,6 +104,12 @@ export interface GaugeFuelProps {
     fonts?: GaugeFonts;
     showDigitalLevel?: boolean;
     padding?: number;
+    needleLength?: number;
+    tickLengthMajor?: number;
+    tickLengthMinor?: number;
+    centerDotRadius?: number;
+    digitalDisplayPosition?: number;
+    labelPosition?: number;
 }
 export type TemperatureUnits = 'celsius' | 'fahrenheit';
 export interface GaugeTemperatureProps {
@@ -99,6 +126,12 @@ export interface GaugeTemperatureProps {
     fonts?: GaugeFonts;
     showDigitalTemperature?: boolean;
     padding?: number;
+    needleLength?: number;
+    tickLengthMajor?: number;
+    tickLengthMinor?: number;
+    centerDotRadius?: number;
+    digitalDisplayPosition?: number;
+    labelPosition?: number;
 }
 export type PressureUnits = 'psi' | 'bar' | 'kpa';
 export interface GaugeOilPressureProps {
@@ -115,6 +148,12 @@ export interface GaugeOilPressureProps {
     fonts?: GaugeFonts;
     showDigitalPressure?: boolean;
     padding?: number;
+    needleLength?: number;
+    tickLengthMajor?: number;
+    tickLengthMinor?: number;
+    centerDotRadius?: number;
+    digitalDisplayPosition?: number;
+    labelPosition?: number;
 }
 export type GaugeGearOrientation = 'portrait' | 'landscape';
 export interface GaugeGearProps {
@@ -127,6 +166,10 @@ export interface GaugeGearProps {
     colors?: GaugeColors;
     fonts?: GaugeFonts;
     padding?: number;
+    gearSize?: number;
+    connectingLineThickness?: number;
+    gearMargin?: number;
+    borderRadius?: number;
 }
 export {};
 //# sourceMappingURL=index.d.ts.map
