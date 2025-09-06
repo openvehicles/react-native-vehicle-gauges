@@ -56,22 +56,12 @@ needleLength, tickLengthMajor = 15, tickLengthMinor = 8, centerDotRadius = 8, di
         digitalSpeed: { ...DEFAULT_FONTS.digitalSpeed, ...(fonts.digitalSpeed || {}) },
         units: { ...DEFAULT_FONTS.units, ...(fonts.units || {}) },
     };
-    // Convert pressure if needed
-    const convertPressure = (psi) => {
-        switch (units) {
-            case 'bar':
-                return psi * 0.0689476; // PSI to Bar
-            case 'kpa':
-                return psi * 6.89476; // PSI to kPa
-            default:
-                return psi; // PSI
-        }
-    };
-    const displayMinPressure = convertPressure(minPressure);
-    const displayMaxPressure = convertPressure(maxPressure);
-    const displayPressure = convertPressure(pressure);
-    const displayLowPressure = lowPressure ? convertPressure(lowPressure) : undefined;
-    const displayHighPressure = highPressure ? convertPressure(highPressure) : undefined;
+    // Use pressure values directly without conversion
+    const displayMinPressure = minPressure;
+    const displayMaxPressure = maxPressure;
+    const displayPressure = pressure;
+    const displayLowPressure = lowPressure;
+    const displayHighPressure = highPressure;
     // Use full available space for half-circle (150px radius from 300px width)
     const maxRadius = 150; // Use full width radius for maximum gauge size
     const paddingPixels = (maxRadius * padding) / 100; // Convert percentage to pixels  
@@ -147,17 +137,8 @@ needleLength, tickLengthMajor = 15, tickLengthMinor = 8, centerDotRadius = 8, di
                 else if (displayHighPressure && i >= displayHighPressure) {
                     numberColor = '#ff0000'; // Red for high pressure
                 }
-                // Display pressure with appropriate precision based on units
-                let displayNumber;
-                if (units === 'bar') {
-                    displayNumber = i.toFixed(1);
-                }
-                else if (units === 'kpa') {
-                    displayNumber = Math.round(i).toString();
-                }
-                else {
-                    displayNumber = Math.round(i).toString();
-                }
+                // Display pressure as integer
+                const displayNumber = Math.round(i).toString();
                 numbers.push(<SvgText x={numberX} y={numberY} fontSize={mergedFonts.numbers.fontSize} fontFamily={mergedFonts.numbers.fontFamily} fontWeight={mergedFonts.numbers.fontWeight} fill={numberColor} textAnchor="middle" alignmentBaseline="middle" key={`number-${i}`}>
             {displayNumber}
           </SvgText>);
@@ -206,25 +187,10 @@ needleLength, tickLengthMajor = 15, tickLengthMinor = 8, centerDotRadius = 8, di
         size.height ? { height: size.height } : {},
     ];
     const getUnitSymbol = () => {
-        switch (units) {
-            case 'bar':
-                return 'bar';
-            case 'kpa':
-                return 'kPa';
-            default:
-                return 'PSI';
-        }
+        return units || 'PSI';
     };
     const formatPressureDisplay = () => {
-        if (units === 'bar') {
-            return displayPressure.toFixed(1);
-        }
-        else if (units === 'kpa') {
-            return Math.round(displayPressure).toString();
-        }
-        else {
-            return Math.round(displayPressure).toString();
-        }
+        return Math.round(displayPressure).toString();
     };
     return (<View style={containerStyle}>
       <View style={[styles.gaugeContainer, { backgroundColor: mergedColors.background }]}>

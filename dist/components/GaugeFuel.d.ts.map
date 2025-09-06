@@ -1,1 +1,1 @@
-{"version":3,"file":"GaugeFuel.d.ts","sourceRoot":"","sources":["../../src/components/GaugeFuel.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAG1B,OAAO,EAAE,cAAc,EAA2B,MAAM,UAAU,CAAC;AAgCnE;;;;;;;;;;;;;;;;GAgBG;AACH,eAAO,MAAM,SAAS,EAAE,KAAK,CAAC,EAAE,CAAC,cAAc,CA6R9C,CAAC"}
+{"version":3,"file":"GaugeFuel.d.ts","sourceRoot":"","sources":["../../src/components/GaugeFuel.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAG1B,OAAO,EAAE,cAAc,EAA2B,MAAM,UAAU,CAAC;AAgCnE;;;;;;;;;;;;;;;;GAgBG;AACH,eAAO,MAAM,SAAS,EAAE,KAAK,CAAC,EAAE,CAAC,cAAc,CA4Q9C,CAAC"}

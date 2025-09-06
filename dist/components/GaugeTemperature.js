@@ -56,18 +56,12 @@ needleLength, tickLengthMajor = 15, tickLengthMinor = 8, centerDotRadius = 8, di
         digitalSpeed: { ...DEFAULT_FONTS.digitalSpeed, ...(fonts.digitalSpeed || {}) },
         units: { ...DEFAULT_FONTS.units, ...(fonts.units || {}) },
     };
-    // Convert temperature if needed
-    const convertTemp = (temp) => {
-        if (units === 'fahrenheit') {
-            return (temp * 9 / 5) + 32;
-        }
-        return temp;
-    };
-    const displayMinTemp = convertTemp(minTemperature);
-    const displayMaxTemp = convertTemp(maxTemperature);
-    const displayTemp = convertTemp(temperature);
-    const displayLowTemp = lowTemperature ? convertTemp(lowTemperature) : undefined;
-    const displayHighTemp = highTemperature ? convertTemp(highTemperature) : undefined;
+    // Use temperature values directly without conversion
+    const displayMinTemp = minTemperature;
+    const displayMaxTemp = maxTemperature;
+    const displayTemp = temperature;
+    const displayLowTemp = lowTemperature;
+    const displayHighTemp = highTemperature;
     // Use full available space for half-circle (150px radius from 300px width)
     const maxRadius = 150; // Use full width radius for maximum gauge size
     const paddingPixels = (maxRadius * padding) / 100; // Convert percentage to pixels  
@@ -191,7 +185,7 @@ needleLength, tickLengthMajor = 15, tickLengthMinor = 8, centerDotRadius = 8, di
         size.width ? { width: size.width } : {},
         size.height ? { height: size.height } : {},
     ];
-    const unitSymbol = units === 'fahrenheit' ? '°F' : '°C';
+    const unitSymbol = units || '°C';
     return (<View style={containerStyle}>
       <View style={[styles.gaugeContainer, { backgroundColor: mergedColors.background }]}>
         <Svg width="100%" height="100%" viewBox={`0 0 300 ${150 + extraHeight}`}>
